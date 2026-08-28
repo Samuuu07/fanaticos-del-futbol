@@ -60,6 +60,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+
 }
 
 img {
@@ -603,7 +604,8 @@ h4 {
   transform: scale(1.06);
 }
 
-.card-tag {
+.card-tag,
+.badge {
   position: absolute;
   top: 0.85rem;
   left: 0.85rem;
@@ -1128,11 +1130,12 @@ h4 {
 }
 
 /* Reducción del ancho general de la retícula de artículos */
+.section .section-head,
+.home-articles .section-head,
 .home-articles .grid,
 .section .grid {
-  max-width: 960px;
-  /* Limita el ancho horizontal total para que las tarjetas no sean tan anchas */
-  margin: 0 auto;
+  width: min(960px, 100%);
+  margin-inline: auto;
 }
 
 /* Estilo base del contenedor de las tarjetas */
@@ -1171,11 +1174,6 @@ h4 {
   object-position: center 15%;
 }
 
-/* Forzar desplazamiento horizontal de las tarjetas a la izquierda */
-.grid {
-  transform: translateX(-85px) !important;
-  /* Ajusta este número (-10px, -20px, -30px...) hasta dejarlo alineado exacto */
-}
 
 /* Ajuste del logo real de Fanáticos en el footer */
 .footer-brand img {
@@ -1276,4 +1274,21 @@ img[src*="juancruz" i] {
     text-align: center;
     gap: 0.75rem;
   }
+}
+
+/* ============================================
+   CENTRADO REAL DE LAS CARDS
+   ============================================ */
+
+.section .wrap,
+.home-articles .wrap {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.section .grid,
+.home-articles .grid {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
