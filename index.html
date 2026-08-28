@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fanáticos del Fútbol — Periodismo y pasión blanquinegra</title>
+  <meta name="description"
+    content="Fanáticos del Fútbol: artículos, análisis y programas de radio sobre el Burgos CF y el fútbol español, cada martes en Radio Marca Burgos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="img/logofanaticossinfondo.png">
+</head>
+
+<div id="article-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-content {
+    background: #fff;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    border-radius: 6px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #000;
+  }
+</style>
+
+<script>
+  function openArticle(id) {
+    const article = ARTICULOS.find(a => a.id === id);
+    if (!article) return;
+    const parrafos = article.parrafos ? article.parrafos.map(p => `<p style="margin-bottom:1rem;line-height:1.6;">${p}</p>`).join('') : `<p>${article.resumen}</p>`;
+
+    document.getElementById('modal-body').innerHTML = `
+      <span style="color:var(--red);font-weight:bold;">${article.categoria}</span>
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin:0.5rem 0 1rem;">${article.titulo}</h2>
+      <img src="${article.imagen}" style="width:100%;height:250px;object-fit:cover;margin-bottom:1.5rem;border-radius:4px;">
+      <div>${parrafos}</div>
+    `;
+    document.getElementById('article-modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('article-modal').style.display = 'none';
+  }
+</script>
+
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Fanáticos del Fútbol — Inicio">
+        <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+        <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html" aria-current="page">Inicio</a>
+        <a href="articulos.html">Artículos</a>
+        <a href="programas.html">Programas</a>
+        <div class="header-social">
+          <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+              data-icon="instagram"></span></a>
+          <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+          <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+              data-icon="tiktok"></span></a>
+        </div>
+      </nav>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-split" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="hero-tag">Periodismo deportivo · Burgos CF</span>
+      <h1>Fanáticos <em>del</em> fútbol,<br>sin filtros.</h1>
+      <p class="hero-sub">Mezclamos periodismo tradicional y moderno para contar el Burgos CF y La Liga como se sienten:
+        con datos, con opinión y con pasión blanquinegra.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="articulos.html">Leer artículos</a>
+        <a class="btn btn-ghost-light" href="programas.html">Escuchar programas</a>
+      </div>
+    </div>
+    <div class="ticker">
+      <div class="wrap" data-ticker></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="quienes-somos">
+    <div class="wrap">
+      <span class="eyebrow reveal">Quiénes somos</span>
+
+      <div class="about-block reveal">
+        <div class="about-media">
+          <img src="img/fotomanuelpersonal.jpg" alt="Foto manuel personal">
+        </div>
+        <div class="about-text">
+          <span class="about-num">01 — Quiénes somos</span>
+          <h3>Una cuenta hecha por y para aficionados</h3>
+          <p>Somos una cuenta dedicada al fútbol español donde mezclamos el periodismo tradicional con el periodismo más
+            moderno.</p>
+          <p>El integrante principal y creador de Fanáticos es <strong>Manuel Cavia</strong>, un joven muy apasionado de
+            la liga española, con un sueño por cumplir: ser periodista deportivo.</p>
+        </div>
+      </div>
+
+      <div class="about-block reverse reveal">
+        <div class="about-media">
+          <img src="img/fotomanuelradiomarca.jpg" alt="Foto manuel radio">
+        </div>
+        <div class="about-text">
+          <span class="about-num">02 — A qué nos dedicamos</span>
+          <h3>Artículos, entrevistas y radio</h3>
+          <p>Realizamos todo tipo de cosas en relación con el fútbol y el periodismo: artículos, entrevistas, eventos,
+            podcast, opiniones, crónicas...</p>
+          <p>Además, hablamos todos los <strong>martes en Radio Marca Burgos</strong>, emisora en la cual tenemos una
+            sección dedicada a nuestras entrevistas.</p>
+        </div>
+      </div>
+
+      <div class="about-block reveal">
+        <div class="about-media">
+          <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos">
+        </div>
+        <div class="about-text">
+          <span class="about-num">03 — Cómo surgió</span>
+          <h3>El inicio de un sueño</h3>
+          <p>Nuestro futuro es el motivo principal de la creación de Fanáticos. La meta que nos marcamos hace ya dos
+            años fue introducirnos y coger experiencia en el mundo del periodismo deportivo. Es decir, Fanáticos es el
+            inicio de un sueño.</p>
+          <p>La motivación de la gente de nuestro alrededor también pesó: muchas personas nos decían, ¿por qué no
+            mostráis al mundo todos vuestros conocimientos sobre el fútbol?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Últimas piezas</span>
+          <h2>Échale un ojo a nuestros artículos</h2>
+        </div>
+        <a class="section-link" href="articulos.html">Ver todos</a>
+      </div>
+
+      <div class="grid">
+        <!-- Tarjeta 1 -->
+        <article class="card">
+          <div class="card-media">
+            <span class="badge">CRÓNICA</span>
+            <img src="img/Duraderrotaenelplantio.jpg" alt="Dura derrota en El Plantío">
+          </div>
+          <div class="card-body">
+            <h3>Dura derrota en El Plantío</h3>
+            <p>El conjunto blanquinegro cae derrotado frente al Real Oviedo rompiendo la buena dinámica que había
+              cosechado en las...</p>
+            <a href="articulos.html" class="card-link">LEER ARTÍCULO &rarr;</a>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2 -->
+        <article class="card">
+          <div class="card-media">
+            <span class="badge">OPINIÓN</span>
+            <img src="img/Lasituaciondealexsancris.jpg" alt="La situación de Álex Sancris">
+          </div>
+          <div class="card-body">
+            <h3>La situación de Álex Sancris</h3>
+            <p>El extremo madrileño está siendo uno de los grandes protagonistas del mercado invernal burgalés por la
+              gran incógnita...</p>
+            <a href="articulos.html" class="card-link">LEER ARTÍCULO &rarr;</a>
+          </div>
+        </article>
+
+        <!-- Tarjeta 3 -->
+        <article class="card">
+          <div class="card-media">
+            <span class="badge">OPINIÓN</span>
+            <img src="img/Lameritocraciaenelmadrid.jpg" alt="La meritocracia en el Real Madrid">
+          </div>
+          <div class="card-body">
+            <h3>La meritocracia en el Real Madrid</h3>
+            <p>A lo largo de la historia, el conjunto blanco siempre ha sido un club en el que contar con oportunidades
+              resulta muy...</p>
+            <a href="articulos.html" class="card-link">LEER ARTÍCULO &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="radio-strip">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Radio Marca Burgos</span>
+        <h2 style="margin-top:0.75rem;">Escucha nuestros programas cada martes</h2>
+        <p>Nuestra sección de entrevistas y preguntas sobre el Burgos CF, semana a semana.</p>
+      </div>
+      <a class="btn btn-primary" href="programas.html">Ver todos los programas</a>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">En directo</span>
+          <h2>Últimos programas</h2>
+        </div>
+        <a class="section-link" href="programas.html">Ver todos</a>
+      </div>
+      <div class="programs-list" data-programs-list></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+            <span class="brand-name">Fanáticos del Fútbol</span>
+          </div>
+          <p>Periodismo deportivo sobre el Burgos CF y el fútbol español. Artículos, opinión y radio, hechos por un
+            aficionado para aficionados.</p>
+          <div class="footer-social">
+            <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+                data-icon="instagram"></span></a>
+            <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+            <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+                data-icon="tiktok"></span></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="articulos.html">Artículos</a></li>
+            <li><a href="programas.html">Programas</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Radio Marca Burgos</h4>
+          <p>Cada martes en directo, con nuestra sección de entrevistas sobre el Burgos CF.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-credits">
+          Desarrollado por <a href="https://www.instagram.com/_saamuuu._/" target="_blank" rel="noopener">Samuel
+            Antón</a>
+        </span>
+        <span>© <span data-year></span> Fanáticos del Fútbol</span>
+        <span>Hecho con pasión blanquinegra</span>
+      </div>
+    </div>
+  </footer>
+  <style>
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    /* Estilo sin subrayado para tu nombre */
+    .footer-credits a {
+      color: #fff;
+      text-decoration: none;
+      /* Quita el subrayado blanco */
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    /* Cambia a rojo al pasar el ratón */
+    .footer-credits a:hover {
+      color: #d32f2f;
+    }
+
+    @media (max-width: 768px) {
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+      }
+    }
+  </style>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.body.dataset.articlesLimit = "3";
+    document.body.dataset.programsLimit = "5";
+    document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
+    document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
+    document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
+  </script>
+</body>
+
+</html>

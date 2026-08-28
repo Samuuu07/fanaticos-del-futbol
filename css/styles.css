@@ -1,0 +1,1279 @@
+/* ============================================================
+   FANÁTICOS DEL FÚTBOL — Sistema de diseño
+   Paleta: negro / blanco / rojo Burgos CF. Sin morados.
+   Display: Oswald · Cuerpo: Inter · Datos/meta: JetBrains Mono
+   ============================================================ */
+
+:root {
+  --black: #0d0d0d;
+  --black-soft: #1a1a1a;
+  --white: #ffffff;
+  --paper: #f4f3ef;
+  --paper-dim: #e8e6df;
+  --red: #e30613;
+  --red-dark: #a3040e;
+  --gray: #6c6a66;
+  --gray-light: #a19e98;
+  --line: rgba(13, 13, 13, 0.12);
+  --line-strong: rgba(13, 13, 13, 0.85);
+
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --container: 1180px;
+  --gap: clamp(1.25rem, 3vw, 2.5rem);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--red);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--red);
+  display: inline-block;
+}
+
+/* ============================================================
+   CRESTA / LOGO — elemento distintivo del sitio
+   ============================================================ */
+.crest {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.brand-name span {
+  color: var(--red);
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+}
+
+.main-nav a {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.main-nav a:hover,
+.main-nav a[aria-current="page"] {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.header-social {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.header-social a {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.header-social a:hover {
+  background: var(--red);
+  border-color: var(--red);
+  transform: translateY(-2px);
+}
+
+.header-social a:hover svg {
+  stroke: var(--white);
+  fill: var(--white);
+}
+
+.header-social svg {
+  width: 15px;
+  height: 15px;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line-strong);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 860px) {
+  .main-nav {
+    position: fixed;
+    inset: 76px 0 0 0;
+    background: var(--paper);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem clamp(1.25rem, 4vw, 2.5rem);
+    gap: 1.5rem;
+    transform: translateX(100%);
+    transition: transform 0.35s var(--ease);
+  }
+
+  .main-nav.open {
+    transform: translateX(0);
+  }
+
+  .main-nav a {
+    font-size: 1rem;
+  }
+
+  .header-social {
+    margin-top: auto;
+    padding-top: 2rem;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  body.nav-open {
+    overflow: hidden;
+  }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+  color: var(--white);
+}
+
+.hero-split {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, var(--black) 0%, var(--black) 48%, var(--white) 48%, var(--white) 100%);
+  opacity: 0.06;
+}
+
+.hero .wrap {
+  position: relative;
+  padding-top: clamp(3.5rem, 9vw, 7rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 8vw, 5.6rem);
+  color: var(--white);
+  max-width: 14ch;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--red);
+}
+
+.hero-sub {
+  margin-top: 1.5rem;
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-cta {
+  margin-top: 2.25rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease);
+}
+
+.btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s var(--ease);
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
+}
+
+.btn-primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  transform: translateY(-2px);
+}
+
+.btn-ghost-light {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-ghost-light:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: translateY(-2px);
+}
+
+.btn-ghost-dark {
+  color: var(--black);
+  border-color: var(--line-strong);
+}
+
+.btn-ghost-dark:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Ticker de datos — elemento firma, cifras reales del contenido */
+.ticker {
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--black-soft);
+}
+
+.ticker .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.75rem, 5vw, 4rem);
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+}
+
+.ticker-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ticker-num {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--white);
+  line-height: 1;
+}
+
+.ticker-num span {
+  color: var(--red);
+}
+
+.ticker-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0;
+}
+
+.section-alt {
+  background: var(--white);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin-top: 0.6rem;
+}
+
+.section-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 3px;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.section-link:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.section-link svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ============================================================
+   QUIÉNES SOMOS — bloques editoriales
+   ============================================================ */
+.about-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  padding: clamp(2.5rem, 6vw, 4rem) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-block:last-child {
+  border-bottom: none;
+}
+
+.about-block.reverse .about-media {
+  order: 2;
+}
+
+.about-media {
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0% 100%);
+  aspect-ratio: 4 / 3;
+  background: var(--black);
+}
+
+.about-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+.about-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gray);
+  letter-spacing: 0.1em;
+}
+
+.about-text h3 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  margin: 0.75rem 0 1.1rem;
+}
+
+.about-text p {
+  color: var(--black-soft);
+  max-width: 52ch;
+}
+
+.about-text p+p {
+  margin-top: 0.9rem;
+}
+
+@media (max-width: 760px) {
+
+  .about-block,
+  .about-block.reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .about-block.reverse .about-media {
+    order: 0;
+  }
+}
+
+/* ============================================================
+   TARJETAS — Artículos
+   ============================================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--line);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -20px rgba(13, 13, 13, 0.35);
+  border-color: var(--black);
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: var(--black);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 22px, 22px 0);
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
+}
+
+.card:hover .card-media img {
+  transform: scale(1.06);
+}
+
+.card-tag {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.card-body h3 {
+  font-size: 1.2rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.card-excerpt {
+  color: var(--gray);
+  font-size: 0.92rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-more {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--black);
+  margin-top: 0.25rem;
+}
+
+.card-more svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.25s var(--ease);
+}
+
+.card:hover .card-more {
+  color: var(--red);
+}
+
+.card:hover .card-more svg {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   TARJETAS — Programas (lista tipo escaleta de radio)
+   ============================================================ */
+.programs-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+}
+
+.program-row {
+  display: grid;
+  grid-template-columns: 90px 110px 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.2s var(--ease);
+}
+
+.program-row:hover {
+  background: rgba(227, 6, 19, 0.04);
+}
+
+.program-thumb {
+  width: 90px;
+  height: 62px;
+  overflow: hidden;
+  background: var(--black);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 14px, 14px 0);
+}
+
+.program-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.program-date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--gray);
+  letter-spacing: 0.03em;
+}
+
+.program-title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.program-listen {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line-strong);
+  white-space: nowrap;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.program-listen svg {
+  width: 11px;
+  height: 11px;
+}
+
+.program-listen:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+@media (max-width: 700px) {
+  .program-row {
+    grid-template-columns: 64px 1fr;
+    grid-template-areas:
+      "thumb title"
+      "date  date"
+      "listen listen";
+    row-gap: 0.6rem;
+  }
+
+  .program-thumb {
+    grid-area: thumb;
+    width: 64px;
+    height: 46px;
+  }
+
+  .program-title {
+    grid-area: title;
+  }
+
+  .program-date {
+    grid-area: date;
+  }
+
+  .program-listen {
+    grid-area: listen;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   RADIO CTA STRIP
+   ============================================================ */
+.radio-strip {
+  background: var(--black);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.radio-strip .wrap {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.radio-strip h2 {
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  color: var(--white);
+  max-width: 20ch;
+}
+
+.radio-strip p {
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 0.6rem;
+  max-width: 40ch;
+}
+
+/* ============================================================
+   PÁGINA ARTÍCULO — lector
+   ============================================================ */
+.article-hero {
+  background: var(--black);
+  color: var(--white);
+  position: relative;
+}
+
+.article-hero .wrap {
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.back-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+  transition: color 0.2s var(--ease);
+}
+
+.back-link:hover {
+  color: var(--red);
+}
+
+.back-link svg {
+  width: 12px;
+  height: 12px;
+  transform: rotate(180deg);
+}
+
+.article-hero h1 {
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  color: var(--white);
+  max-width: 20ch;
+}
+
+.article-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.05em;
+}
+
+.article-meta .tag-pill {
+  background: var(--red);
+  color: var(--white);
+  padding: 0.25rem 0.6rem;
+}
+
+.article-figure {
+  margin: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 32px, 32px 0);
+  background: var(--black);
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+}
+
+.article-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) 0;
+}
+
+.article-body p {
+  font-size: 1.08rem;
+  color: var(--black-soft);
+  margin: 0 0 1.3rem;
+}
+
+.article-body p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.6rem;
+  float: left;
+  line-height: 0.8;
+  padding: 0.1rem 0.5rem 0 0;
+  color: var(--red);
+}
+
+.article-footer {
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.share-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.share-row a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.share-row a:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.share-row a:hover svg {
+  stroke: var(--white);
+  fill: var(--white);
+}
+
+.share-row svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  background: var(--black);
+  color: var(--white);
+  padding: clamp(3rem, 6vw, 4.5rem) 0 2rem;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand .brand-name {
+  color: var(--white);
+}
+
+.footer-col p {
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 34ch;
+  font-size: 0.92rem;
+}
+
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.footer-col a {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s var(--ease);
+}
+
+.footer-col a:hover {
+  color: var(--red);
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.footer-social a:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.footer-social svg {
+  width: 15px;
+  height: 15px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 760px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* ============================================================
+   PÁGINA DE LISTADO — cabecera
+   ============================================================ */
+.page-hero {
+  background: var(--black);
+  color: var(--white);
+}
+
+.page-hero .wrap {
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.page-hero h1 {
+  color: var(--white);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+}
+
+.page-hero p {
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 50ch;
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   404 / EMPTY
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 5rem 1rem;
+  color: var(--gray);
+}
+
+/* ============================================================
+   AJUSTE DE TAMAÑO DEL LOGO EN EL HEADER
+   ============================================================ */
+.site-header .brand img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Ajuste de encuadre para las imágenes de Quiénes Somos */
+.about-media img {
+  object-fit: cover;
+  object-position: 50% 35%;
+  /* Ajusta el 70% entre 50% y 100% hasta encontrar la altura perfecta */
+}
+
+/* Excepción para que el logo de la tercera sección se vea completo */
+.about-media img[src*="logofanaticossinfondo"] {
+  object-fit: contain;
+  object-position: center;
+  padding: 2.5rem;
+  background: var(--white);
+}
+
+/* Imagen de fondo para el hero con capa de oscurecimiento */
+.hero {
+  background-image: linear-gradient(rgba(13, 13, 13, 0.75), rgba(13, 13, 13, 0.75)), url('../img/fotoplantio.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Reducción del ancho general de la retícula de artículos */
+.home-articles .grid,
+.section .grid {
+  max-width: 960px;
+  /* Limita el ancho horizontal total para que las tarjetas no sean tan anchas */
+  margin: 0 auto;
+}
+
+/* Estilo base del contenedor de las tarjetas */
+.card-media {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  /* Reducido de 320px a 240px para hacerlas más compactas */
+  overflow: hidden;
+  background-color: #0d0d0d;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --------------------------------------------------
+   AJUSTES INDIVIDUALES (Manteniendo tus porcentajes)
+   -------------------------------------------------- */
+
+/* 1. Foto: Dura derrota en El Plantío */
+.card-media img[src*="Duraderrotaenelplantio"] {
+  object-position: center 5%;
+}
+
+/* 2. Foto: La situación de Álex Sancris */
+.card-media img[src*="Lasituaciondealexsancris"] {
+  object-position: center 75%;
+}
+
+/* 3. Foto: La meritocracia en el Real Madrid */
+.card-media img[src*="Lameritocraciaenelmadrid"] {
+  object-position: center 15%;
+}
+
+/* Forzar desplazamiento horizontal de las tarjetas a la izquierda */
+.grid {
+  transform: translateX(-85px) !important;
+  /* Ajusta este número (-10px, -20px, -30px...) hasta dejarlo alineado exacto */
+}
+
+/* Ajuste del logo real de Fanáticos en el footer */
+.footer-brand img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============================================================
+   ENCUADRES INDIVIDUALES DE LAS IMÁGENES (CORREGIDO)
+   ============================================================ */
+
+/* 1. Dura derrota en El Plantío */
+img[src*="duraderrotaenelplantio" i] {
+  object-position: center 0% !important;
+}
+
+/* 2. La situación de Álex Sancris */
+img[src*="lasituaciondealexsancris" i] {
+  object-position: center 0% !important;
+}
+
+/* 3. La meritocracia en el Real Madrid */
+img[src*="lameritocraciaenelmadrid" i] {
+  object-position: center 25% !important;
+}
+
+/* 4. Jesús Areso */
+img[src*="jesusaresounfutbolista" i] {
+  object-position: center 4% !important;
+}
+
+/* 5. Notas del Burgos CF */
+img[src*="notasdelburgoscf" i] {
+  object-position: center 0% !important;
+}
+
+/* 6. La hora de Dani Ceballos */
+img[src*="lahoradedaniceballos" i] {
+  object-position: center 2% !important;
+}
+
+/* 7. Mi opinión sobre Mbappé */
+img[src*="opinionmbappe" i] {
+  object-position: center 5% !important;
+}
+
+/* 8. Los problemas del Burgos CF */
+img[src*="problemasdelburgos" i] {
+  object-position: center 5% !important;
+}
+
+/* 9. La Liga vs la Premier */
+img[src*="laligavspremier" i] {
+  object-position: center 5% !important;
+}
+
+/* 10. Juan Cruz */
+img[src*="juancruz" i] {
+  object-position: center 5% !important;
+}
+
+/* Pie de página inferior */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+.footer-credits {
+  font-size: 0.75rem;
+  /* Tamaño más pequeño para los créditos */
+  opacity: 0.85;
+}
+
+.footer-credits a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-credits a:hover {
+  color: #d32f2f;
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}

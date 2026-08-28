@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Cargando artículo... — Fanáticos del Fútbol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="img/logofanaticossinfondo.png">
+    <style>
+        .article-layout {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 3rem 1rem 0 1rem;
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos para el enlace de volver a todos los artículos */
+        .article-header .back-link {
+            display: inline-block;
+            color: #d32f2f;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .article-header .back-link:hover,
+        .article-header .back-link:active {
+            color: var(--black);
+        }
+
+        /* Corrección del estilo de la categoría (eliminar líneas raras antes del texto) */
+        .article-header .eyebrow {
+            display: inline-block;
+            color: #d32f2f;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .article-header .eyebrow::before,
+        .article-header .eyebrow::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .article-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            line-height: 1.1;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+            text-transform: uppercase;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .article-meta strong {
+            color: var(--black);
+        }
+
+        /* Foto fija a la derecha */
+        .article-featured-media {
+            float: right;
+            width: 420px;
+            max-width: 45%;
+            margin: 0 0 1.5rem 2rem;
+        }
+
+        .article-featured-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Cuerpo del artículo */
+        .article-content {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #222;
+        }
+
+        .article-content p {
+            margin-bottom: 1.6rem;
+        }
+
+        .article-content::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Navegación inferior con espacio amplio antes del footer */
+        .article-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 4rem;
+            margin-bottom: 6rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            clear: both;
+        }
+
+        .article-nav-card {
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            background: var(--white);
+            border: 1px solid var(--line);
+            text-decoration: none;
+            transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+        }
+
+        .article-nav-card:hover {
+            border-color: var(--black);
+            transform: translateY(-3px);
+        }
+
+        .article-nav-card.next {
+            text-align: right;
+        }
+
+        .article-nav-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.35rem;
+        }
+
+        .article-nav-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--black);
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .article-featured-media {
+                float: none;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 0 1.5rem 0;
+            }
+
+            .article-nav {
+                grid-template-columns: 1fr;
+                margin-bottom: 3rem;
+            }
+
+            .article-nav-card.next {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="wrap">
+            <a class="brand" href="index.html" aria-label="Fanáticos del Fútbol — Inicio">
+                <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+                <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="index.html">Inicio</a>
+                <a href="articulos.html" aria-current="page">Artículos</a>
+                <a href="programas.html">Programas</a>
+                <div class="header-social">
+                    <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+                            data-icon="instagram"></span></a>
+                    <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span
+                            data-icon="x"></span></a>
+                    <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+                            data-icon="tiktok"></span></a>
+                </div>
+            </nav>
+            <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+        </div>
+    </header>
+
+    <main id="article-main">
+        <div class="wrap" style="padding: 4rem 1rem; text-align: center;" id="loading-state">
+            <p class="eyebrow">Fanáticos del Fútbol</p>
+            <h2 style="margin-top: 1rem;">Cargando contenido...</h2>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+                        <span class="brand-name">Fanáticos del Fútbol</span>
+                    </div>
+                    <p>Periodismo deportivo sobre el Burgos CF y el fútbol español. Artículos, opinión y radio, hechos
+                        por un
+                        aficionado para aficionados.</p>
+                    <div class="footer-social">
+                        <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+                                data-icon="instagram"></span></a>
+                        <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span
+                                data-icon="x"></span></a>
+                        <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+                                data-icon="tiktok"></span></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="articulos.html">Artículos</a></li>
+                        <li><a href="programas.html">Programas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Radio Marca Burgos</h4>
+                    <p>Cada martes en directo, con nuestra sección de entrevistas sobre el Burgos CF.</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span class="footer-credits">
+                    Desarrollado por <a href="https://www.instagram.com/_saamuuu._/" target="_blank"
+                        rel="noopener">Samuel
+                        Antón</a>
+                </span>
+                <span>© <span data-year></span> Fanáticos del Fútbol</span>
+                <span>Hecho con pasión blanquinegra</span>
+            </div>
+        </div>
+    </footer>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
+        document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
+        document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const articleId = params.get('id');
+            const main = document.getElementById('article-main');
+
+            const currentIndex = ARTICULOS.findIndex(a => a.id === articleId);
+
+            if (currentIndex !== -1) {
+                const article = ARTICULOS[currentIndex];
+                document.getElementById('page-title').textContent = `${article.titulo} — Fanáticos del Fútbol`;
+
+                const prevArticle = currentIndex > 0 ? ARTICULOS[currentIndex - 1] : null;
+                const nextArticle = currentIndex < ARTICULOS.length - 1 ? ARTICULOS[currentIndex + 1] : null;
+
+                const parrafosHTML = article.parrafos
+                    ? article.parrafos.map(p => `<p>${p}</p>`).join('')
+                    : `<p>${article.resumen}</p>`;
+
+                main.innerHTML = `
+          <div class="article-layout">
+            
+            <header class="article-header">
+              <a class="back-link" href="articulos.html">&larr; Volver a todos los artículos</a>
+              <br>
+              <span class="eyebrow">${article.categoria}</span>
+              <h1>${article.titulo}</h1>
+              <div class="article-meta">
+                <span>Por <strong>Manuel Cavia</strong></span>
+                <span>•</span>
+                <span>${article.fecha}</span>
+              </div>
+            </header>
+
+            <article class="article-content">
+              <div class="article-featured-media">
+                <img src="${article.imagen}" alt="${article.titulo}">
+              </div>
+              ${parrafosHTML}
+            </article>
+
+            <nav class="article-nav">
+              ${prevArticle ? `
+                <a href="articulo.html?id=${prevArticle.id}" class="article-nav-card prev">
+                  <span class="article-nav-label">&larr; Artículo anterior</span>
+                  <span class="article-nav-title">${prevArticle.titulo}</span>
+                </a>
+              ` : '<div></div>'}
+
+              ${nextArticle ? `
+                <a href="articulo.html?id=${nextArticle.id}" class="article-nav-card next">
+                  <span class="article-nav-label">Siguiente artículo &rarr;</span>
+                  <span class="article-nav-title">${nextArticle.titulo}</span>
+                </a>
+              ` : '<div></div>'}
+            </nav>
+
+          </div>
+        `;
+
+                if (typeof injectStaticIcons === 'function') {
+                    injectStaticIcons();
+                }
+            } else {
+                main.innerHTML = `
+          <div class="wrap">
+            <div class="empty-state">
+              <span class="eyebrow">Error 404</span>
+              <h1 style="margin-top:1rem;">Artículo no encontrado</h1>
+              <p style="margin-top:1rem;">Lo sentimos, el artículo solicitado no existe o ha sido movido.</p>
+              <a class="btn btn-primary" style="margin-top:2rem;" href="articulos.html">Ver todos los artículos</a>
+            </div>
+          </div>
+        `;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programas — Fanáticos del Fútbol</title>
+  <meta name="description"
+    content="Todos los programas de Fanáticos del Fútbol en Radio Marca Burgos: entrevistas y preguntas sobre el Burgos CF.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="img/logofanaticossinfondo.png">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Fanáticos del Fútbol — Inicio">
+        <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+        <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Inicio</a>
+        <a href="articulos.html">Artículos</a>
+        <a href="programas.html" aria-current="page">Programas</a>
+        <div class="header-social">
+          <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+              data-icon="instagram"></span></a>
+          <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+          <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+              data-icon="tiktok"></span></a>
+        </div>
+      </nav>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Programas</span>
+      <h1 style="margin-top:0.75rem;">Cada martes, en Radio Marca Burgos</h1>
+      <p>Nuestra sección de entrevistas y preguntas semanales sobre el Burgos CF. Dale a "Escuchar" para abrir el
+        episodio en Radio Marca Burgos.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="programs-list" data-programs-list></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+            <span class="brand-name">Fanáticos del Fútbol</span>
+          </div>
+          <p>Periodismo deportivo sobre el Burgos CF y el fútbol español. Artículos, opinión y radio, hechos por un
+            aficionado para aficionados.</p>
+          <div class="footer-social">
+            <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+                data-icon="instagram"></span></a>
+            <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+            <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+                data-icon="tiktok"></span></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="articulos.html">Artículos</a></li>
+            <li><a href="programas.html">Programas</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Radio Marca Burgos</h4>
+          <p>Cada martes en directo, con nuestra sección de entrevistas sobre el Burgos CF.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-credits">
+          Desarrollado por <a href="https://www.instagram.com/_saamuuu._/" target="_blank" rel="noopener">Samuel
+            Antón</a>
+        </span>
+        <span>© <span data-year></span> Fanáticos del Fútbol</span>
+        <span>Hecho con pasión blanquinegra</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
+    document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
+    document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
+  </script>
+</body>
+
+</html>
