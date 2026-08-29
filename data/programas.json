@@ -1,6 +1,12 @@
 {
   "programas": [
     {
+      "titulo": "Hacemos una prueba?",
+      "fecha": "23/12/2025",
+      "imagen": "img/Lameritocraciaenelmadrid.jpg",
+      "link": "https://youtube.com"
+    },
+    {
       "titulo": "Si tuvieses delante a Figoli, ¿Qué le dirías?",
       "fecha": "17/12/2024",
       "imagen": "img/logoradiomarca.png",
