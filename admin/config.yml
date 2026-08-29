@@ -3,6 +3,7 @@ backend:
   repo: Samuuu07/fanaticos-del-futbol
   branch: main
   base_url: https://fanaticos-oauth.vercel.app
+  auth_endpoint: auth?provider=github   # ← esta línea es la clave
 
 media_folder: "img"
 public_folder: "img"
