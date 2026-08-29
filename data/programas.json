@@ -1,11 +1,6 @@
 {
   "programas": [
     {
-      "titulo": "Prueba de radio (Samu)",
-      "imagen": "img/viveradio.jpg",
-      "link": "https://www.viveradio.es/podcastBurgos"
-    },
-    {
       "titulo": "Si tuvieses delante a Figoli, ¿Qué le dirías?",
       "fecha": "17/12/2024",
       "imagen": "img/logoradiomarca.png",
