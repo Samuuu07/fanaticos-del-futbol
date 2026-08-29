@@ -3,7 +3,6 @@ backend:
   repo: Samuuu07/fanaticos-del-futbol
   branch: main
   base_url: https://fanaticos-oauth.vercel.app
-  auth_endpoint: auth?provider=github
 
 media_folder: "img"
 public_folder: "img"
