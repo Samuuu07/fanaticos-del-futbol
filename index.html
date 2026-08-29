@@ -14,6 +14,64 @@
     rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/png" href="img/logofanaticossinfondo.png">
+  <style>
+    /* 1. Centrar el contenido y limitar el ancho máximo para evitar que se estire */
+    #nc-root>div>div {
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      padding: 20px !important;
+    }
+
+    /* 2. Mejorar la barra superior (Header) */
+    header {
+      background-color: #1e293b !important;
+      /* Azul oscuro moderno */
+      border-radius: 8px !important;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+      margin-bottom: 24px !important;
+      padding: 0 16px !important;
+    }
+
+    header a,
+    header button {
+      color: #ffffff !important;
+      /* Texto blanco para el menú */
+    }
+
+    /* 3. Estilizar la barra lateral de Colecciones (Artículos, Programas...) */
+    aside {
+      background-color: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 16px !important;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.05) !important;
+    }
+
+    /* Estilo para el botón de la colección seleccionada (ej: Artículos) */
+    aside a[class*="active"] {
+      background-color: #3b82f6 !important;
+      /* Azul vibrante */
+      color: white !important;
+      border-radius: 6px !important;
+      font-weight: 600 !important;
+    }
+
+    /* 4. Estilizar las tarjetas de contenido del lado derecho */
+    main>div {
+      background-color: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 24px !important;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.05) !important;
+    }
+
+    /* 5. Cambiar el fondo gris aburrido de la pantalla por uno más suave */
+    body {
+      background-color: #f8fafc !important;
+      font-family: system-ui, -apple-system, sans-serif !important;
+    }
+  </style>
+
 </head>
 
 <body>
