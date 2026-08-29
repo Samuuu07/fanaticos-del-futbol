@@ -374,6 +374,11 @@ h4 {
   flex-wrap: wrap;
 }
 
+.
+
+/* ============================================================
+   BOTONES — Estética unificada en cápsulas flotantes
+   ============================================================ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -382,10 +387,12 @@ h4 {
   font-size: 0.78rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.95rem 1.6rem;
+  padding: 0.85rem 1.75rem;
   border: 1px solid currentColor;
-  border-radius: 2px;
-  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease);
+  border-radius: 50px;
+  /* Estilo cápsula idéntico al header */
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.08);
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
 .btn svg {
@@ -398,6 +405,11 @@ h4 {
   transform: translateX(4px);
 }
 
+.btn:hover {
+  box-shadow: 0 10px 25px -5px rgba(227, 6, 19, 0.25);
+}
+
+/* Botón Primario (Rojo Burgos CF) */
 .btn-primary {
   background: var(--red);
   border-color: var(--red);
@@ -410,18 +422,23 @@ h4 {
   transform: translateY(-2px);
 }
 
+/* Botón Secundario Translúcido para Fondos Oscuros */
 .btn-ghost-light {
+  background: rgba(255, 255, 255, 0.08);
   color: var(--white);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn-ghost-light:hover {
   background: var(--white);
   color: var(--black);
+  border-color: var(--white);
   transform: translateY(-2px);
 }
 
+/* Botón Secundario para Fondos Claros */
 .btn-ghost-dark {
+  background: var(--paper-dim);
   color: var(--black);
   border-color: var(--line-strong);
 }
@@ -429,6 +446,7 @@ h4 {
 .btn-ghost-dark:hover {
   background: var(--black);
   color: var(--white);
+  border-color: var(--black);
   transform: translateY(-2px);
 }
 
@@ -1329,4 +1347,26 @@ img[src*="juancruz" i] {
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
+}
+
+/* ============================================================
+   CORRECCIÓN DEFINITIVA DE BOTONES EN CÁPSULA
+   ============================================================ */
+.btn,
+.program-listen {
+  border-radius: 50px !important;
+  clip-path: none !important;
+  /* Elimina cualquier recorte poligonal heredado */
+  -webkit-clip-path: none !important;
+}
+
+/* ============================================================
+   AMPLIAR TAMAÑO Y RELLENO DE LOS BOTONES
+   ============================================================ */
+.btn,
+.program-listen {
+  padding: 1.1rem 2.2rem !important;
+  /* Aumenta el área interior vertical y horizontal */
+  font-size: 0.85rem !important;
+  /* Letra ligeramente más legible y grande */
 }
