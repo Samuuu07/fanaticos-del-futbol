@@ -20,7 +20,6 @@ collections:
             name: "articulos"
             widget: "list"
             add_to_top: true
-            collapsed: false
             label_singular: "artículo"
             summary: "{{fields.titulo}} — {{fields.fecha}} ({{fields.categoria}})"
             fields:
@@ -53,7 +52,6 @@ collections:
             name: "programas"
             widget: "list"
             add_to_top: true
-            collapsed: false
             label_singular: "programa"
             summary: "{{fields.titulo}} — {{fields.fecha}}"
             fields:
