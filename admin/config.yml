@@ -3,7 +3,7 @@ backend:
   repo: Samuuu07/fanaticos-del-futbol
   branch: main
   base_url: https://fanaticos-oauth.vercel.app
-  auth_endpoint: auth?provider=github   # ← esta línea es la clave
+  auth_endpoint: auth?provider=github
 
 media_folder: "img"
 public_folder: "img"
@@ -13,14 +13,16 @@ collections:
     label: "Artículos"
     files:
       - name: "articulos"
-        label: "Lista de artículos"
+        label: "Artículos"
         file: "data/articulos.json"
         fields:
-          - label: "Artículos"
+          - label: "Lista de artículos"
             name: "articulos"
             widget: "list"
-            add_to_top: true          # ← NUEVO: se crea arriba
-            summary: "{{fields.titulo}}"
+            add_to_top: true
+            collapsed: false
+            label_singular: "artículo"
+            summary: "{{fields.titulo}} — {{fields.fecha}} ({{fields.categoria}})"
             fields:
               - { label: "Título", name: "titulo", widget: "string" }
               - label: "Categoría"
@@ -30,7 +32,7 @@ collections:
               - { label: "Autor", name: "autor", widget: "string", default: "Manuel Cavia" }
               - label: "Fecha"
                 name: "fecha"
-                widget: "datetime"     # ← cambiado de date a datetime
+                widget: "datetime"
                 date_format: "DD/MM/YYYY"
                 time_format: false
                 format: "DD/MM/YYYY"
@@ -44,19 +46,21 @@ collections:
     label: "Programas"
     files:
       - name: "programas"
-        label: "Lista de programas"
+        label: "Programas"
         file: "data/programas.json"
         fields:
-          - label: "Programas"
+          - label: "Lista de programas"
             name: "programas"
             widget: "list"
-            add_to_top: true          # ← NUEVO: se crea arriba
-            summary: "{{fields.titulo}}"
+            add_to_top: true
+            collapsed: false
+            label_singular: "programa"
+            summary: "{{fields.titulo}} — {{fields.fecha}}"
             fields:
               - { label: "Título / pregunta", name: "titulo", widget: "string" }
               - label: "Fecha"
                 name: "fecha"
-                widget: "datetime"     # ← cambiado de date a datetime
+                widget: "datetime"
                 date_format: "DD/MM/YYYY"
                 time_format: false
                 format: "DD/MM/YYYY"
