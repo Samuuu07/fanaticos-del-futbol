@@ -19,6 +19,7 @@ collections:
           - label: "Artículos"
             name: "articulos"
             widget: "list"
+            add_to_top: true          # ← NUEVO: se crea arriba
             summary: "{{fields.titulo}}"
             fields:
               - { label: "Título", name: "titulo", widget: "string" }
@@ -27,7 +28,12 @@ collections:
                 widget: "select"
                 options: ["Crónica", "Opinión", "Análisis"]
               - { label: "Autor", name: "autor", widget: "string", default: "Manuel Cavia" }
-              - { label: "Fecha", name: "fecha", widget: "date", format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              - label: "Fecha"
+                name: "fecha"
+                widget: "datetime"     # ← cambiado de date a datetime
+                date_format: "DD/MM/YYYY"
+                time_format: false
+                format: "DD/MM/YYYY"
               - { label: "Imagen", name: "imagen", widget: "image" }
               - label: "Contenido"
                 name: "contenido"
@@ -44,9 +50,15 @@ collections:
           - label: "Programas"
             name: "programas"
             widget: "list"
+            add_to_top: true          # ← NUEVO: se crea arriba
             summary: "{{fields.titulo}}"
             fields:
               - { label: "Título / pregunta", name: "titulo", widget: "string" }
-              - { label: "Fecha", name: "fecha", widget: "date", format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              - label: "Fecha"
+                name: "fecha"
+                widget: "datetime"     # ← cambiado de date a datetime
+                date_format: "DD/MM/YYYY"
+                time_format: false
+                format: "DD/MM/YYYY"
               - { label: "Imagen", name: "imagen", widget: "image", required: false, hint: "Si no subes ninguna, se usa el logo de Radio Marca." }
               - { label: "Enlace de Radio Marca Burgos", name: "link", widget: "string" }
