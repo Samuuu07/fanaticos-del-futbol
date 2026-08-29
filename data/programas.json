@@ -1,6 +1,12 @@
 {
   "programas": [
     {
+      "titulo": "Prueba de como funcionan las fechas",
+      "fecha": "16/12/2024",
+      "imagen": "img/Lasituaciondealexsancris.jpg",
+      "link": "https://youtube.com"
+    },
+    {
       "titulo": "Hacemos una prueba?",
       "fecha": "23/12/2025",
       "imagen": "img/Lameritocraciaenelmadrid.jpg",
