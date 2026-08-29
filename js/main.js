@@ -63,11 +63,11 @@ function renderTicker() {
   if (!el || typeof ARTICULOS === "undefined") return;
   el.innerHTML = `
     <div class="ticker-item">
-      <div class="ticker-num">${String(ARTICULOS.length).padStart(2,"0")}</div>
+      <div class="ticker-num">${String(ARTICULOS.length).padStart(2, "0")}</div>
       <div class="ticker-label">Artículos publicados</div>
     </div>
     <div class="ticker-item">
-      <div class="ticker-num">${String(PROGRAMAS.length).padStart(2,"0")}</div>
+      <div class="ticker-num">${String(PROGRAMAS.length).padStart(2, "0")}</div>
       <div class="ticker-label">Programas en Radio Marca</div>
     </div>
     <div class="ticker-item">
@@ -125,64 +125,6 @@ function renderProgramsList(selector, limit) {
   el.innerHTML = items.map(programRowHTML).join("");
 }
 
-/* ---------- Página de artículo individual ---------- */
-function renderArticlePage() {
-  const root = document.querySelector("[data-article-root]");
-  if (!root) return;
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  const articulo = (typeof ARTICULOS !== "undefined") ? ARTICULOS.find(a => a.id === id) : null;
-
-  if (!articulo) {
-    root.innerHTML = `
-      <div class="wrap">
-        <div class="empty-state">
-          <p class="eyebrow">Artículo no encontrado</p>
-          <h1 style="margin-top:1rem;">No hemos encontrado esta página</h1>
-          <p style="margin-top:1rem;">Puede que el enlace esté roto o el artículo se haya movido.</p>
-          <a class="btn btn-ghost-dark" style="margin-top:2rem;" href="articulos.html">Volver a artículos</a>
-        </div>
-      </div>`;
-    document.title = "Artículo no encontrado — Fanáticos del Fútbol";
-    return;
-  }
-
-  document.title = `${articulo.titulo} — Fanáticos del Fútbol`;
-
-  const parrafosHTML = articulo.parrafos.map(p => `<p>${p}</p>`).join("");
-
-  root.innerHTML = `
-    <section class="article-hero">
-      <div class="wrap">
-        <a class="back-link" href="articulos.html">${ICONS.arrow} Todos los artículos</a>
-        <span class="eyebrow">${articulo.categoria}</span>
-        <h1 style="margin-top:1rem;">${articulo.titulo}</h1>
-        <div class="article-meta">
-          <span>${articulo.fecha}</span>
-          <span>Fanáticos del Fútbol</span>
-        </div>
-      </div>
-    </section>
-    <figure class="article-figure">
-      <img src="${articulo.imagen}" alt="${articulo.titulo}">
-    </figure>
-    <div class="wrap">
-      <article class="article-body">
-        ${parrafosHTML}
-        <div class="article-footer">
-          <span class="eyebrow" style="color:var(--gray);">Compartir</span>
-          <div class="share-row">
-            <a href="${REDES.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICONS.instagram}</a>
-            <a href="${REDES.x}" target="_blank" rel="noopener" aria-label="X">${ICONS.x}</a>
-            <a href="${REDES.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">${ICONS.tiktok}</a>
-          </div>
-        </div>
-      </article>
-    </div>
-  `;
-  initReveal();
-}
-
 /* ---------- Inyectar iconos estáticos (header/footer social) ---------- */
 function injectStaticIcons() {
   document.querySelectorAll("[data-icon]").forEach(el => {
@@ -201,6 +143,5 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTicker();
   renderArticlesGrid("[data-articles-grid]", document.body.dataset.articlesLimit ? Number(document.body.dataset.articlesLimit) : null);
   renderProgramsList("[data-programs-list]", document.body.dataset.programsLimit ? Number(document.body.dataset.programsLimit) : null);
-  renderArticlePage();
   initReveal();
 });
