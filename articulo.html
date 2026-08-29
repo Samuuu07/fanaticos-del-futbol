@@ -26,7 +26,7 @@
         /* Estilos para el enlace de volver a todos los artículos */
         .article-header .back-link {
             display: inline-block;
-            color: #d32f2f;
+            color: var(--red);
             font-family: var(--font-mono);
             font-size: 0.85rem;
             text-decoration: none;
@@ -43,7 +43,7 @@
         /* Corrección del estilo de la categoría (eliminar líneas raras antes del texto) */
         .article-header .eyebrow {
             display: inline-block;
-            color: #d32f2f;
+            color: var(--red);
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -96,10 +96,10 @@
 
         /* Cuerpo del artículo */
         .article-content {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: var(--font-body);
             font-size: 1.1rem;
             line-height: 1.8;
-            color: #222;
+            color: var(--black-soft);
         }
 
         .article-content p {

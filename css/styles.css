@@ -1084,23 +1084,49 @@ h4 {
   height: 15px;
 }
 
+/* footer-bottom unificado (antes había 2 bloques que chocaban) */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
-  padding-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.4);
+  /* Blanco translúcido → contraste correcto sobre fondo negro del footer */
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer-credits {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.footer-credits a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-credits a:hover {
+  color: var(--red);
+  opacity: 1;
 }
 
 @media (max-width: 760px) {
   .footer-top {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
   }
 }
 
@@ -1201,7 +1227,7 @@ h4 {
   height: 240px;
   /* Reducido de 320px a 240px para hacerlas más compactas */
   overflow: hidden;
-  background-color: #0d0d0d;
+  background-color: var(--black);
 }
 
 .card-media img {
@@ -1293,44 +1319,7 @@ img[src*="juancruz" i] {
   object-position: center 5% !important;
 }
 
-/* Pie de página inferior */
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--gray);
-}
-
-.footer-credits {
-  font-size: 0.75rem;
-  /* Tamaño más pequeño para los créditos */
-  opacity: 0.85;
-}
-
-.footer-credits a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease, opacity 0.2s ease;
-}
-
-.footer-credits a:hover {
-  color: #d32f2f;
-  opacity: 1;
-}
-
-@media (max-width: 768px) {
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.75rem;
-  }
-}
+/* (footer-bottom unificado más arriba — se eliminó el bloque duplicado) */
 
 /* ============================================
    CENTRADO REAL DE LAS CARDS
@@ -1350,23 +1339,13 @@ img[src*="juancruz" i] {
 }
 
 /* ============================================================
-   CORRECCIÓN DEFINITIVA DE BOTONES EN CÁPSULA
+   BOTONES EN CÁPSULA (sin !important innecesarios)
    ============================================================ */
 .btn,
 .program-listen {
-  border-radius: 50px !important;
-  clip-path: none !important;
-  /* Elimina cualquier recorte poligonal heredado */
-  -webkit-clip-path: none !important;
-}
-
-/* ============================================================
-   AMPLIAR TAMAÑO Y RELLENO DE LOS BOTONES
-   ============================================================ */
-.btn,
-.program-listen {
-  padding: 1.1rem 2.2rem !important;
-  /* Aumenta el área interior vertical y horizontal */
-  font-size: 0.85rem !important;
-  /* Letra ligeramente más legible y grande */
+  border-radius: 50px;
+  clip-path: none;
+  -webkit-clip-path: none;
+  padding: 1.1rem 2.2rem;
+  font-size: 0.85rem;
 }
