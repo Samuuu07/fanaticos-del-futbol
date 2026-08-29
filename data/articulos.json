@@ -1,6 +1,14 @@
 {
   "articulos": [
     {
+      "autor": "Manuel Cavia",
+      "titulo": "Prueba",
+      "categoria": "Crónica",
+      "fecha": "30/08/2026",
+      "imagen": "img/lugarradiomarca.jpg",
+      "contenido": "e"
+    },
+    {
       "titulo": "Dura derrota en El Plantío",
       "categoria": "Crónica",
       "autor": "Manuel Cavia",
