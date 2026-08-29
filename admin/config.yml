@@ -1,0 +1,51 @@
+backend:
+  name: github
+  repo: Samuuu07/fanaticos-del-futbol
+  branch: main
+  base_url: https://fanaticos-oauth.vercel.app
+
+media_folder: "img"
+public_folder: "img"
+
+collections:
+  - name: "articulos"
+    label: "Artículos"
+    files:
+      - name: "articulos"
+        label: "Lista de artículos"
+        file: "data/articulos.json"
+        fields:
+          - label: "Artículos"
+            name: "articulos"
+            widget: "list"
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título", name: "titulo", widget: "string" }
+              - label: "Categoría"
+                name: "categoria"
+                widget: "select"
+                options: ["Crónica", "Opinión", "Análisis"]
+              - { label: "Autor", name: "autor", widget: "string", default: "Manuel Cavia" }
+              - { label: "Fecha", name: "fecha", widget: "date", format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              - { label: "Imagen", name: "imagen", widget: "image" }
+              - label: "Contenido"
+                name: "contenido"
+                widget: "text"
+                hint: "Deja una línea en blanco entre párrafos."
+
+  - name: "programas"
+    label: "Programas"
+    files:
+      - name: "programas"
+        label: "Lista de programas"
+        file: "data/programas.json"
+        fields:
+          - label: "Programas"
+            name: "programas"
+            widget: "list"
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título / pregunta", name: "titulo", widget: "string" }
+              - { label: "Fecha", name: "fecha", widget: "date", format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              - { label: "Imagen", name: "imagen", widget: "image", required: false, hint: "Si no subes ninguna, se usa el logo de Radio Marca." }
+              - { label: "Enlace de Radio Marca Burgos", name: "link", widget: "string" }

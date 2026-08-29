@@ -264,7 +264,7 @@
         document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
         document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
 
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("datosListos", () => {
             const params = new URLSearchParams(window.location.search);
             const articleId = params.get('id');
             const main = document.getElementById('article-main');

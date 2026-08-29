@@ -140,6 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
   injectStaticIcons();
   initNav();
   initFooterYear();
+});
+
+document.addEventListener("datosListos", () => {
   renderTicker();
   renderArticlesGrid("[data-articles-grid]", document.body.dataset.articlesLimit ? Number(document.body.dataset.articlesLimit) : null);
   renderProgramsList("[data-programs-list]", document.body.dataset.programsLimit ? Number(document.body.dataset.programsLimit) : null);
