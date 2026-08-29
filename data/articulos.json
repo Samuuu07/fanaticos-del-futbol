@@ -1,6 +1,14 @@
 {
   "articulos": [
     {
+      "autor": "Samuel Anton",
+      "titulo": "Prueba",
+      "categoria": "Crónica",
+      "fecha": "29/08/2026",
+      "imagen": "img/lugarradiomarca.jpg",
+      "contenido": "Esto suele pasar por un par de motivos muy comunes relacionados con el almacenamiento en caché del navegador o con cómo el servidor de GitHub Pages compila los archivos. Aquí tienes las razones exactas y cómo solucionarlo:\n\n1. Caché agresiva del navegador (La causa más habitual)\nCuando abres el Live Server en local, tu navegador suele leer los archivos directamente de tu ordenador y a veces recarga los estilos al instante. Sin embargo, cuando subes cambios a internet y visitas tu web publicada en GitHub Pages, tu navegador recuerda (cachea) la versión antigua del archivo styles.css y se niega a descargar el nuevo durante unos minutos o incluso horas.\n\nPrueba esto: Abre tu web publicada y haz una recarga forzada para limpiar la caché:\n\nEn Windows/Linux: Ctrl + F5 (o Ctrl + Shift + R)\n\nEn Mac: Cmd + Shift + R\n\nO abre la página en una pestaña de incógnito/privada. Si ahí sí se ve bien, era 100% un problema de caché de tu navegador.\n\n2. Retraso en la compilación de GitHub Pages\nA veces GitHub tarda entre 30 segundos y 3 minutos en procesar el commit, compilar los archivos estáticos y actualizar la versión pública de la web. Si recargas la página inmediatamente después de hacer el sync, es posible que todavía te esté sirviendo la versión vieja.\n\n3. Rutas relativas o archivos incorrectos (Cuidado con esto)\nAsegúrate de que estás modificando el archivo CSS correcto que está leyendo tu proyecto (por ejemplo, css/styles.css o styles.css) y que al hacer el git add y el commit has incluido la carpeta o archivo CSS modificado. A veces se sube el index.html pero se olvida subir el CSS modificado. Puedes comprobarlo entrando directamente a tu repositorio en GitHub.com y mirando si el código de tu archivo styles.css online ya muestra los cambios que hiciste."
+    },
+    {
       "titulo": "Dura derrota en El Plantío",
       "categoria": "Crónica",
       "autor": "Manuel Cavia",
