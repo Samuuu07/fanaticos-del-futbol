@@ -293,8 +293,8 @@
                 const nextArticle = currentIndex < ARTICULOS.length - 1 ? ARTICULOS[currentIndex + 1] : null;
 
                 const parrafosHTML = article.parrafos
-                    ? article.parrafos.map(p => `<p>${p}</p>`).join('')
-                    : `<p>${article.resumen}</p>`;
+                    ? article.parrafos.map(p => `<p>${escapeHtml(p)}</p>`).join('')
+                    : `<p>${escapeHtml(article.resumen)}</p>`;
 
                 main.innerHTML = `
           <div class="article-layout">
@@ -302,34 +302,34 @@
             <header class="article-header">
               <a class="back-link" href="articulos.html">&larr; Volver a todos los artículos</a>
               <br>
-              <span class="eyebrow">${article.categoria}</span>
-              <h1>${article.titulo}</h1>
+              <span class="eyebrow">${escapeHtml(article.categoria)}</span>
+              <h1>${escapeHtml(article.titulo)}</h1>
               <div class="article-meta">
-                <span>Por <strong>${article.autor}</strong></span>
+                <span>Por <strong>${escapeHtml(article.autor)}</strong></span>
                 <span>•</span>
-                <span>${article.fecha}</span>
+                <span>${escapeHtml(article.fecha)}</span>
               </div>
             </header>
 
             <article class="article-content">
               <div class="article-featured-media">
-                <img src="${article.imagen}" alt="${article.titulo}">
+                <img src="${escapeHtml(article.imagen)}" alt="${escapeHtml(article.titulo)}">
               </div>
               ${parrafosHTML}
             </article>
 
             <nav class="article-nav">
               ${prevArticle ? `
-                <a href="articulo.html?id=${prevArticle.id}" class="article-nav-card prev">
+                <a href="articulo.html?id=${escapeHtml(prevArticle.id)}" class="article-nav-card prev">
                   <span class="article-nav-label">&larr; Artículo anterior</span>
-                  <span class="article-nav-title">${prevArticle.titulo}</span>
+                  <span class="article-nav-title">${escapeHtml(prevArticle.titulo)}</span>
                 </a>
               ` : '<div></div>'}
 
               ${nextArticle ? `
-                <a href="articulo.html?id=${nextArticle.id}" class="article-nav-card next">
+                <a href="articulo.html?id=${escapeHtml(nextArticle.id)}" class="article-nav-card next">
                   <span class="article-nav-label">Siguiente artículo &rarr;</span>
-                  <span class="article-nav-title">${nextArticle.titulo}</span>
+                  <span class="article-nav-title">${escapeHtml(nextArticle.titulo)}</span>
                 </a>
               ` : '<div></div>'}
             </nav>

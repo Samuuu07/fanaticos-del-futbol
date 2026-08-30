@@ -2,6 +2,17 @@
    FANÁTICOS DEL FÚTBOL — Lógica compartida
    ============================================================ */
 
+/* ---------- Escapar HTML (todo lo que viene del CMS es texto, no marcado) ---------- */
+function escapeHtml(value) {
+  if (value === null || value === undefined) return "";
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /* ---------- Iconos SVG reutilizables ---------- */
 const ICONS = {
   arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
@@ -90,14 +101,14 @@ function renderTicker() {
 /* ---------- Tarjeta de artículo ---------- */
 function articleCardHTML(a, index) {
   return `
-    <a class="card reveal" href="articulo.html?id=${a.id}" style="transition-delay:${(index % 3) * 80}ms">
+    <a class="card reveal" href="articulo.html?id=${escapeHtml(a.id)}" style="transition-delay:${(index % 3) * 80}ms">
       <div class="card-media">
-        <img src="${a.imagen}" alt="${a.titulo}" loading="lazy">
-        <span class="card-tag">${a.categoria}</span>
+        <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy">
+        <span class="card-tag">${escapeHtml(a.categoria)}</span>
       </div>
       <div class="card-body">
-        <h3>${a.titulo}</h3>
-        <p class="card-excerpt">${a.resumen}</p>
+        <h3>${escapeHtml(a.titulo)}</h3>
+        <p class="card-excerpt">${escapeHtml(a.resumen)}</p>
         <span class="card-more">Leer artículo ${ICONS.arrow}</span>
       </div>
     </a>
@@ -108,10 +119,10 @@ function articleCardHTML(a, index) {
 function programRowHTML(p, index) {
   return `
     <div class="program-row reveal" style="transition-delay:${(index % 6) * 60}ms">
-      <div class="program-thumb"><img src="${p.imagen}" alt="${p.titulo}" loading="lazy"></div>
-      <div class="program-date">${p.fecha}</div>
-      <div class="program-title">${p.titulo}</div>
-      <a class="program-listen" href="${p.link}" target="_blank" rel="noopener">Escuchar ${ICONS.play}</a>
+      <div class="program-thumb"><img src="${escapeHtml(p.imagen)}" alt="${escapeHtml(p.titulo)}" loading="lazy"></div>
+      <div class="program-date">${escapeHtml(p.fecha)}</div>
+      <div class="program-title">${escapeHtml(p.titulo)}</div>
+      <a class="program-listen" href="${escapeHtml(p.link)}" target="_blank" rel="noopener">Escuchar ${ICONS.play}</a>
     </div>
   `;
 }
