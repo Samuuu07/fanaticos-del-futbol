@@ -269,6 +269,20 @@
             const articleId = params.get('id');
             const main = document.getElementById('article-main');
 
+            if (window.ARTICULOS_ERROR || !Array.isArray(window.ARTICULOS)) {
+                main.innerHTML = `
+          <div class="wrap">
+            <div class="empty-state">
+              <span class="eyebrow">Error al cargar</span>
+              <h1 style="margin-top:1rem;">No se ha podido cargar el contenido</h1>
+              <p style="margin-top:1rem;">No es que este artículo no exista: ha habido un problema cargando los datos del sitio. Recarga la página en un momento.</p>
+              <a class="btn btn-primary" style="margin-top:2rem;" href="articulos.html">Ver todos los artículos</a>
+            </div>
+          </div>
+        `;
+                return;
+            }
+
             const currentIndex = ARTICULOS.findIndex(a => a.id === articleId);
 
             if (currentIndex !== -1) {
@@ -291,7 +305,7 @@
               <span class="eyebrow">${article.categoria}</span>
               <h1>${article.titulo}</h1>
               <div class="article-meta">
-                <span>Por <strong>Manuel Cavia</strong></span>
+                <span>Por <strong>${article.autor}</strong></span>
                 <span>•</span>
                 <span>${article.fecha}</span>
               </div>

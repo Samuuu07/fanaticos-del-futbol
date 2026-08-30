@@ -60,7 +60,13 @@ function initFooterYear() {
 /* ---------- Ticker de cifras (hero de inicio) ---------- */
 function renderTicker() {
   const el = document.querySelector("[data-ticker]");
-  if (!el || typeof ARTICULOS === "undefined") return;
+  if (!el) return;
+  if (window.ARTICULOS_ERROR || window.PROGRAMAS_ERROR) {
+    el.innerHTML = `<div class="ticker-item"><div class="ticker-label" style="color:#ff9d9d;">No se ha podido cargar el contenido. Recarga la página en un momento.</div></div>`;
+    return;
+  }
+  const ARTICULOS = window.ARTICULOS || [];
+  const PROGRAMAS = window.PROGRAMAS || [];
   el.innerHTML = `
     <div class="ticker-item">
       <div class="ticker-num">${String(ARTICULOS.length).padStart(2, "0")}</div>
@@ -113,16 +119,26 @@ function programRowHTML(p, index) {
 /* ---------- Render de grids en cada página ---------- */
 function renderArticlesGrid(selector, limit) {
   const el = document.querySelector(selector);
-  if (!el || typeof ARTICULOS === "undefined") return;
+  if (!el) return;
+  if (window.ARTICULOS_ERROR) {
+    el.innerHTML = `<p class="empty-state">No se han podido cargar los artículos. Vuelve a intentarlo en unos minutos.</p>`;
+    return;
+  }
+  const ARTICULOS = window.ARTICULOS || [];
   const items = limit ? ARTICULOS.slice(0, limit) : ARTICULOS;
-  el.innerHTML = items.map(articleCardHTML).join("");
+  el.innerHTML = items.length ? items.map(articleCardHTML).join("") : `<p class="empty-state">Todavía no hay artículos publicados.</p>`;
 }
 
 function renderProgramsList(selector, limit) {
   const el = document.querySelector(selector);
-  if (!el || typeof PROGRAMAS === "undefined") return;
+  if (!el) return;
+  if (window.PROGRAMAS_ERROR) {
+    el.innerHTML = `<p class="empty-state">No se han podido cargar los programas. Vuelve a intentarlo en unos minutos.</p>`;
+    return;
+  }
+  const PROGRAMAS = window.PROGRAMAS || [];
   const items = limit ? PROGRAMAS.slice(0, limit) : PROGRAMAS;
-  el.innerHTML = items.map(programRowHTML).join("");
+  el.innerHTML = items.length ? items.map(programRowHTML).join("") : `<p class="empty-state">Todavía no hay programas publicados.</p>`;
 }
 
 /* ---------- Inyectar iconos estáticos (header/footer social) ---------- */
