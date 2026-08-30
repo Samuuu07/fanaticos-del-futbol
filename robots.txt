@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Allow: /
+
+Sitemap: https://samuuu07.github.io/fanaticos-del-futbol/sitemap.xml
