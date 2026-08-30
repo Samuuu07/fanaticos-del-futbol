@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Cargando artículo... — Fanáticos del Fútbol</title>
+    <meta id="page-description" name="description"
+        content="Artículo de Fanáticos del Fútbol: opinión y análisis sobre el Burgos CF y el fútbol español.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -288,6 +290,8 @@
             if (currentIndex !== -1) {
                 const article = ARTICULOS[currentIndex];
                 document.getElementById('page-title').textContent = `${article.titulo} — Fanáticos del Fútbol`;
+                const metaDesc = document.getElementById('page-description');
+                if (metaDesc && article.resumen) metaDesc.setAttribute('content', article.resumen);
 
                 const prevArticle = currentIndex > 0 ? ARTICULOS[currentIndex - 1] : null;
                 const nextArticle = currentIndex < ARTICULOS.length - 1 ? ARTICULOS[currentIndex + 1] : null;
