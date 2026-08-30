@@ -1199,6 +1199,18 @@ img[src*="juancruz" i] {
   justify-content: center;
 }
 
+/* En móvil, el .wrap sin padding de arriba deja el contenido pegado
+   a los bordes (cards de inicio y lista de programas). Se le devuelve
+   el mismo margen lateral que usa el resto del sitio, solo por debajo
+   de 768px: en desktop el .wrap ya queda centrado por el viewport y
+   no necesita este padding. */
+@media (max-width: 768px) {
+  .section .wrap {
+    padding-left: clamp(1.25rem, 4vw, 2.5rem);
+    padding-right: clamp(1.25rem, 4vw, 2.5rem);
+  }
+}
+
 /* ============================================================
    BOTONES EN CÁPSULA (sin !important innecesarios)
    ============================================================ */
