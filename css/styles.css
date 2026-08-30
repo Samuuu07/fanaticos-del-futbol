@@ -643,7 +643,6 @@ h4 {
 
 .card-media {
   position: relative;
-  aspect-ratio: 16 / 11;
   overflow: hidden;
   background: var(--black);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 22px, 22px 0);
@@ -1237,26 +1236,6 @@ h4 {
   display: block;
 }
 
-/* --------------------------------------------------
-   AJUSTES INDIVIDUALES (Manteniendo tus porcentajes)
-   -------------------------------------------------- */
-
-/* 1. Foto: Dura derrota en El Plantío */
-.card-media img[src*="Duraderrotaenelplantio"] {
-  object-position: center 5%;
-}
-
-/* 2. Foto: La situación de Álex Sancris */
-.card-media img[src*="Lasituaciondealexsancris"] {
-  object-position: center 75%;
-}
-
-/* 3. Foto: La meritocracia en el Real Madrid */
-.card-media img[src*="Lameritocraciaenelmadrid"] {
-  object-position: center 15%;
-}
-
-
 /* Ajuste del logo real de Fanáticos en el footer */
 .footer-brand img {
   height: 40px;
@@ -1267,6 +1246,16 @@ h4 {
 
 /* ============================================================
    ENCUADRES INDIVIDUALES DE LAS IMÁGENES (CORREGIDO)
+
+   Estos 10 ajustes son retoques puntuales SOLO para las fotos
+   originales migradas del Google Sites (van atadas al nombre
+   de archivo). Cualquier foto nueva subida desde /admin (Decap)
+   tendrá un nombre distinto, no va a coincidir con ninguna de
+   estas reglas, y usará el recorte por defecto (centro) definido
+   en ".card-media img" más arriba — eso es intencional, no un
+   fallo. Si algún día una foto nueva necesita un encuadre
+   distinto, se añade una regla más con el mismo patrón, con el
+   nombre de archivo real de esa imagen.
    ============================================================ */
 
 /* 1. Dura derrota en El Plantío */
