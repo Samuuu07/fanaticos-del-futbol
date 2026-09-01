@@ -101,7 +101,7 @@ function renderTicker() {
 /* ---------- Tarjeta de artículo ---------- */
 function articleCardHTML(a, index) {
   return `
-    <a class="card reveal" href="articulo.html?id=${escapeHtml(a.id)}" style="transition-delay:${(index % 3) * 80}ms">
+    <a class="card reveal" href="articulos/${escapeHtml(a.id)}.html" style="transition-delay:${(index % 3) * 80}ms">
       <div class="card-media">
         <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy">
         <span class="card-tag">${escapeHtml(a.categoria)}</span>
