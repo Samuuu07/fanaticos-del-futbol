@@ -1,15 +1,6 @@
 {
   "articulos": [
     {
-      "autor": "Manuel Cavia",
-      "id": "prueba-articulo",
-      "titulo": "Prueba de articulo",
-      "categoria": "Crónica",
-      "fecha": "01/09/2026",
-      "imagen": "img/fotomanoescribiendo.jpg",
-      "contenido": "Esto es una prueba para el workflow cuando se sube un articulo nuevo."
-    },
-    {
       "id": "dura-derrota-en-el-plantio",
       "titulo": "Dura derrota en El Plantío",
       "categoria": "Crónica",
