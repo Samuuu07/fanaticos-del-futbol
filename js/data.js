@@ -39,6 +39,17 @@ function slugifyFallback(text) {
     .replace(/-+/g, "-");
 }
 
+// Quita negrita/cursiva/títulos de markdown para usar el texto en el
+// resumen de la tarjeta (donde no se quiere ver **esto** literal).
+function markdownATextoPlano(texto) {
+  return String(texto || "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/_(.+?)_/g, "$1")
+    .trim();
+}
+
 async function cargarArticulos() {
   try {
     const res = await fetch("data/articulos.json", { cache: "no-store" });
@@ -57,7 +68,8 @@ async function cargarArticulos() {
         .map(p => p.trim())
         .filter(Boolean);
 
-      let resumen = parrafos[0] || "";
+      const primerParrafo = parrafos.find(p => !/^#{2,3}\s+/.test(p)) || parrafos[0] || "";
+      let resumen = markdownATextoPlano(primerParrafo);
       if (resumen.length > 160) resumen = resumen.slice(0, 157).trim() + "...";
 
       return {

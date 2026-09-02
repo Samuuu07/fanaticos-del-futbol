@@ -42,8 +42,11 @@ collections:
               - { label: "Imagen", name: "imagen", widget: "image" }
               - label: "Contenido"
                 name: "contenido"
-                widget: "text"
-                hint: "Deja una línea en blanco entre párrafos."
+                widget: "markdown"
+                buttons: ["bold", "italic", "heading-two", "heading-three"]
+                editor_components: []
+                modes: ["rich_text"]
+                hint: "Selecciona texto y usa los botones de negrita/cursiva/título. Deja una línea en blanco entre párrafos. El primer párrafo se destaca solo, no hace falta marcarlo."
 
   - name: "programas"
     label: "Programas"

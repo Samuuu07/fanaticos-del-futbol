@@ -40,6 +40,40 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+/* ---------- Markdown seguro (solo negrita, cursiva y títulos) ----------
+   Nunca se confía en el texto: primero se escapa TODO como HTML (igual
+   que antes), y solo después se buscan los símbolos de formato sobre el
+   texto ya escapado. Así, aunque alguien escriba <script> a mano en el
+   editor, sale como texto literal, nunca como HTML real. No se soporta
+   ningún otro símbolo de markdown (listas, enlaces, imágenes, HTML
+   embebido...) — lo que no se reconoce se muestra tal cual, en texto. */
+function formatearLineaMarkdown(textoEscapado) {
+  return textoEscapado
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>")
+    .replace(/_(.+?)_/g, "<em>$1</em>");
+}
+
+function bloqueMarkdownAHtml(bloque) {
+  const texto = bloque.trim();
+  const h2 = texto.match(/^##\s+(.+)$/);
+  if (h2) return `<h2 class="article-heading">${formatearLineaMarkdown(escapeHtml(h2[1].trim()))}</h2>`;
+  const h3 = texto.match(/^###\s+(.+)$/);
+  if (h3) return `<h3 class="article-subheading">${formatearLineaMarkdown(escapeHtml(h3[1].trim()))}</h3>`;
+  return `<p>${formatearLineaMarkdown(escapeHtml(texto))}</p>`;
+}
+
+/* Quita los símbolos de markdown para usar el texto en resúmenes/meta
+   (donde no se quiere ver **esto** literal, solo "esto"). */
+function markdownATextoPlano(texto) {
+  return String(texto || "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/_(.+?)_/g, "$1")
+    .trim();
+}
+
 function absoluteUrl(relativePath) {
   if (!relativePath) return SITE_URL + "/";
   return `${SITE_URL}/${String(relativePath).replace(/^\/+/, "")}`;
@@ -80,7 +114,11 @@ const preparados = articulos.map(a => {
     .map(p => p.trim())
     .filter(Boolean);
 
-  let resumen = parrafos[0] || "";
+  // El resumen usa el primer bloque que NO sea un título (## / ###),
+  // con el markdown quitado, para que no aparezcan símbolos sueltos
+  // en las tarjetas ni en la descripción para redes sociales.
+  const primerParrafo = parrafos.find(p => !/^#{2,3}\s+/.test(p)) || parrafos[0] || "";
+  let resumen = markdownATextoPlano(primerParrafo);
   if (resumen.length > 160) resumen = resumen.slice(0, 157).trim() + "...";
 
   return {
@@ -115,7 +153,7 @@ function articuloHTML(art, prev, next) {
   const resumenEsc = escapeHtml(art.resumen);
 
   const parrafosHTML = art.parrafos.length
-    ? art.parrafos.map(p => `<p>${escapeHtml(p)}</p>`).join("\n              ")
+    ? art.parrafos.map(bloqueMarkdownAHtml).join("\n              ")
     : `<p>${resumenEsc}</p>`;
 
   const navHTML = `
@@ -186,6 +224,16 @@ function articuloHTML(art, prev, next) {
         .article-featured-media img { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
         .article-content { font-family: var(--font-body); font-size: 1.1rem; line-height: 1.8; color: var(--black-soft); }
         .article-content p { margin-bottom: 1.6rem; }
+        .article-content p:first-of-type { font-size: 1.28rem; line-height: 1.6; color: var(--black); font-weight: 500; }
+        .article-content strong { color: var(--black); font-weight: 700; }
+        .article-content .article-heading {
+            font-family: var(--font-display); text-transform: uppercase; color: var(--black);
+            font-size: 1.5rem; margin: 2.4rem 0 1rem; clear: both;
+        }
+        .article-content .article-subheading {
+            font-family: var(--font-display); text-transform: uppercase; color: var(--red);
+            font-size: 1.1rem; margin: 1.8rem 0 0.75rem; clear: both;
+        }
         .article-content::after { content: ""; display: table; clear: both; }
         .article-nav {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 4rem;
