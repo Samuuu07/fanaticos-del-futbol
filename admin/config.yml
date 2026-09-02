@@ -31,7 +31,7 @@ collections:
               - label: "Categoría"
                 name: "categoria"
                 widget: "select"
-                options: ["Crónica", "Opinión", "Análisis"]
+                options: ["Noticia", "Crónica", "Opinión", "Análisis"]
               - { label: "Autor", name: "autor", widget: "string", default: "Manuel Cavia" }
               - label: "Fecha"
                 name: "fecha"
