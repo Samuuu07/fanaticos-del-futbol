@@ -85,7 +85,7 @@ function renderTicker() {
     </div>
     <div class="ticker-item">
       <div class="ticker-num">${String(PROGRAMAS.length).padStart(2, "0")}</div>
-      <div class="ticker-label">Programas en Radio Marca</div>
+      <div class="ticker-label">Programas</div>
     </div>
     <div class="ticker-item">
       <div class="ticker-num">Martes</div>
