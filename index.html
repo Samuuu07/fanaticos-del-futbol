@@ -57,19 +57,34 @@
       <div class="wrap" data-ticker></div>
     </div>
   </section>
-  <section class="section">
+  <section class="section section-feed">
     <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Échale un ojo a nuestros artículos</span>
-          <h2>Últimas noticias</h2>
+      <div class="feed-layout">
+        <div class="feed-main">
+          <div class="section-head reveal">
+            <div>
+              <span class="eyebrow">Portada</span>
+              <h2>Últimas noticias</h2>
+            </div>
+            <a class="section-link" href="articulos.html">Ver todos</a>
+          </div>
+          <div class="grid grid-bento" data-articles-grid></div>
         </div>
-        <a class="section-link" href="articulos.html">Ver todos</a>
-      </div>
 
-      <div class="grid" data-articles-grid></div>
+        <aside class="feed-side">
+          <div class="section-head section-head-compact reveal">
+            <div>
+              <span class="eyebrow">En directo</span>
+              <h2>Últimos programas</h2>
+            </div>
+            <a class="section-link" href="programas.html">Ver todos</a>
+          </div>
+          <div class="programs-list programs-side" data-programs-list></div>
+        </aside>
+      </div>
     </div>
   </section>
+
   <section class="section section-alt" id="quienes-somos">
     <div class="wrap">
       <span class="eyebrow reveal">Quiénes somos</span>
@@ -116,30 +131,6 @@
             mostráis al mundo todos vuestros conocimientos sobre el fútbol?</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="radio-strip">
-    <div class="wrap">
-      <div>
-        <span class="eyebrow">Radio Marca Burgos</span>
-        <h2 style="margin-top:0.75rem;">Escucha nuestros programas cada martes</h2>
-        <p>Nuestra sección de entrevistas y preguntas sobre el Burgos CF, semana a semana.</p>
-      </div>
-      <a class="btn btn-primary" href="programas.html">Ver todos los programas</a>
-    </div>
-  </section>
-
-  <section class="section section-alt">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">En directo</span>
-          <h2>Últimos programas</h2>
-        </div>
-        <a class="section-link" href="programas.html">Ver todos</a>
-      </div>
-      <div class="programs-list" data-programs-list></div>
     </div>
   </section>
 
@@ -191,7 +182,7 @@
   <script src="js/main.js"></script>
   <script>
     document.body.dataset.articlesLimit = "3";
-    document.body.dataset.programsLimit = "5";
+    document.body.dataset.programsLimit = "4";
     document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
     document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
     document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
