@@ -1263,7 +1263,7 @@ img[src*="juancruz" i] {
   grid-column: 1;
   grid-row: 1 / span 2;
   height: auto;
-  align-self: start;
+  align-self: center;
 }
 
 .grid-bento .card:nth-child(1) .card-body {
