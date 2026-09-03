@@ -101,7 +101,7 @@ async function cargarProgramas() {
     window.PROGRAMAS = (data.programas || []).map(p => ({
       titulo: p.titulo,
       fecha: p.fecha,
-      imagen: p.imagen || "img/logoradiomarca.png",
+      imagen: p.imagen || "img/viveradio.jpg",
       link: p.link
     }));
   } catch (err) {

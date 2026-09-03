@@ -320,8 +320,8 @@ function articuloHTML(art, prev, next) {
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Radio Marca Burgos</h4>
-                    <p>Cada martes en directo, con nuestra sección de entrevistas sobre el Burgos CF.</p>
+                  <h4>Vive! Radio</h4>
+                  <p>Cada martes en directo, de 23 a 00, con nuestro propio programa, Fánaticos del BCF.</p>
                 </div>
             </div>
             <div class="footer-bottom">

@@ -69,5 +69,5 @@ collections:
                 date_format: "DD/MM/YYYY"
                 time_format: false
                 format: "DD/MM/YYYY"
-              - { label: "Imagen", name: "imagen", widget: "image", required: false, hint: "Si no subes ninguna, se usa el logo de Radio Marca." }
-              - { label: "Enlace de Radio Marca Burgos", name: "link", widget: "string" }
+              - { label: "Imagen", name: "imagen", widget: "image", required: false, hint: "Si no subes ninguna, se usa el logo de Vive! Radio." }
+              - { label: "Enlace del programa", name: "link", widget: "string" }
