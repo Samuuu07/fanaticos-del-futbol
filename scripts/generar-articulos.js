@@ -307,7 +307,7 @@ function articuloHTML(art, prev, next) {
                         <img src="../img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
                         <span class="brand-name">Fanáticos del Fútbol</span>
                     </div>
-                    <p>Periodismo deportivo sobre el Burgos CF y el fútbol español. Artículos, opinión y radio, hechos por un aficionado para aficionados.</p>
+                    <p>Periodismo deportivo sobre el Burgos CF. Artículos, opinión y radio, hechos por un aficionado para aficionados.</p>
                     <div class="footer-social">${socialIconsHTML()}
                     </div>
                 </div>
