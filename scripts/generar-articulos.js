@@ -321,7 +321,7 @@ function articuloHTML(art, prev, next) {
                 </div>
                 <div class="footer-col">
                   <h4>Vive! Radio</h4>
-                  <p>Cada martes en directo, de 23 a 00, con nuestro propio programa, Fánaticos del BCF.</p>
+                  <p>Cada martes en directo, de 23 a 00, con nuestro propio programa, Fanáticos del BCF.</p>
                 </div>
             </div>
             <div class="footer-bottom">
