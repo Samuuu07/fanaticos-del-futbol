@@ -220,8 +220,8 @@ function articuloHTML(art, prev, next) {
             font-size: 0.85rem; color: var(--gray); text-transform: uppercase;
         }
         .article-meta strong { color: var(--black); }
-        .article-featured-media { float: right; width: 420px; max-width: 45%; margin: 0 0 1.5rem 2rem; }
-        .article-featured-media img { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .article-featured-media { float: right; width: 420px; max-width: 45%; margin: 0 0 1.5rem 2rem; aspect-ratio: 4 / 3; background: var(--line); border-radius: 6px; overflow: hidden; }
+        .article-featured-media img { width: 100%; height: 100%; object-fit: cover; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
         .article-content { font-family: var(--font-body); font-size: 1.1rem; line-height: 1.8; color: var(--black-soft); }
         .article-content p { margin-bottom: 1.6rem; }
         .article-content p:first-of-type { font-size: 1.28rem; line-height: 1.6; color: var(--black); font-weight: 500; }
