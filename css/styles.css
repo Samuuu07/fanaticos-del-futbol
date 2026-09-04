@@ -1340,6 +1340,11 @@ img[src*="juancruz" i] {
   align-items: start;
 }
 
+.feed-main,
+.feed-side {
+  min-width: 0;
+}
+
 .feed-side {
   position: static;
 }
