@@ -25,7 +25,8 @@
       "titulo": "PABLO GALDAMES, RELEVO PROTAGONISTA",
       "id": "pablo-galdames-relevo-protagonista",
       "imagen": "img/galdames.jpeg",
-      "fecha": "21/07/2026"
+      "fecha": "21/07/2026",
+      "imagen_pos": "45% 10%"
     },
     {
       "autor": "Manuel Cavia",
