@@ -1,22 +1,10 @@
 /**
  * Fanáticos del Fútbol — Widget "Encuadre para tarjeta"
  * ------------------------------------------------------------
- * Guarda un string CSS object-position, p.ej. "45% 30%" o "center 20%".
- * Muestra la imagen del campo "imagen" del mismo artículo, permite
- * hacer clic para elegir el punto de interés, y previsualiza en vivo
- * cómo se verá en la card (object-fit: cover + object-position).
- *
- * Uso en config.yml (colección artículos):
- *   - { label: "Imagen", name: "imagen", widget: "image" }
- *   - label: "Encuadre para tarjeta"
- *     name: "imagen_pos"
- *     widget: "focal-point"
- *     required: false
- *     default: "center center"
- *     hint: "Haz clic en la zona importante (cara, balón…). Se usa solo en las cards."
- *
- * Carga en admin/index.html (DESPUÉS de decap-cms.js):
- *   <script src="/admin/focal-point-widget.js"></script>
+ * Guarda un string CSS object-position, p.ej. "45% 30%".
+ * Compatible con colecciones tipo lista (un solo articulos.json).
+ * Busca la imagen del campo hermano "imagen" subiendo por el DOM
+ * del ítem de la lista (entry.getIn no llega al ítem anidado).
  */
 (function () {
   if (typeof CMS === "undefined" || typeof createClass === "undefined") {
@@ -31,33 +19,88 @@
   }
 
   var CARD_W = 320;
-  var CARD_H = 180; // proporción aproximada de .card-media (220px en desktop ~ 16:10)
+  var CARD_H = 180;
 
   var FocalPointControl = createClass({
     getInitialState: function () {
-      return { imgNatural: null };
+      return { imgSrc: null };
     },
 
-    /** Lee la ruta de imagen del mismo entry (campo "imagen"). */
-    getImagePath: function () {
-      try {
-        var entry = this.props.entry;
-        if (entry && entry.getIn) {
-          var path = entry.getIn(["data", "imagen"]);
-          if (path) return String(path);
+    componentDidMount: function () {
+      this._alive = true;
+      this.syncImageFromSibling();
+      // La preview de Decap a veces tarda en pintar el <img>
+      this._timer = setInterval(this.syncImageFromSibling, 600);
+    },
+
+    componentWillUnmount: function () {
+      this._alive = false;
+      if (this._timer) clearInterval(this._timer);
+    },
+
+    componentDidUpdate: function () {
+      this.syncImageFromSibling();
+    },
+
+    /**
+     * Busca en el mismo ítem de la lista un <img> del widget Image.
+     * Ignora el marcador de este propio widget.
+     */
+    syncImageFromSibling: function () {
+      if (!this._alive) return;
+      var forID = this.props.forID;
+      var root = forID ? document.getElementById(forID) : null;
+      if (!root) return;
+
+      var found = null;
+      var node = root.parentElement;
+      // Subir por el árbol hasta encontrar un contenedor con otra imagen
+      for (var depth = 0; depth < 12 && node; depth++) {
+        var imgs = node.querySelectorAll("img");
+        for (var i = 0; i < imgs.length; i++) {
+          var img = imgs[i];
+          // Saltar imágenes dentro de este mismo control
+          if (root.contains(img)) continue;
+          var src = img.getAttribute("src") || "";
+          // Decap usa blob: para previews recién subidas — también vale
+          if (!src) continue;
+          // Evitar iconos UI minúsculos
+          if (img.naturalWidth > 0 && img.naturalWidth < 24) continue;
+          if (img.width > 0 && img.width < 24 && img.naturalWidth === 0) continue;
+          found = src;
+          break;
         }
-      } catch (e) { }
-      // Fallback: a veces está en fieldsMetaData
-      return null;
+        if (found) break;
+        node = node.parentElement;
+      }
+
+      // Fallback: entry plano (por si alguna vez no es lista)
+      if (!found) {
+        try {
+          var entry = this.props.entry;
+          if (entry && entry.getIn) {
+            var path = entry.getIn(["data", "imagen"]);
+            if (path) {
+              found = String(path);
+              if (found.indexOf("http") !== 0 && found.charAt(0) !== "/" && found.indexOf("blob:") !== 0) {
+                found = "/" + found.replace(/^\.\//, "");
+              }
+            }
+          }
+        } catch (e) { }
+      }
+
+      if (found && found !== this.state.imgSrc) {
+        this.setState({ imgSrc: found });
+      }
     },
 
     parsePos: function (value) {
-      // "45% 30%" | "center center" | "center 20%"
       var v = (value || "center center").trim();
       var parts = v.split(/\s+/);
       if (parts.length < 2) return { x: 50, y: 50 };
 
-      function toPct(token, axis) {
+      function toPct(token) {
         if (token === "center" || token === "centre") return 50;
         if (token === "left" || token === "top") return 0;
         if (token === "right" || token === "bottom") return 100;
@@ -65,7 +108,7 @@
         if (m) return Math.max(0, Math.min(100, parseFloat(m[1])));
         return 50;
       }
-      return { x: toPct(parts[0], "x"), y: toPct(parts[1], "y") };
+      return { x: toPct(parts[0]), y: toPct(parts[1]) };
     },
 
     formatPos: function (x, y) {
@@ -84,16 +127,9 @@
     render: function () {
       var value = this.props.value || "center center";
       var pos = this.parsePos(value);
-      var imgPath = this.getImagePath();
+      var imgSrc = this.state.imgSrc;
       var forID = this.props.forID;
       var classNameWrapper = this.props.classNameWrapper;
-
-      // Resolver URL de la imagen para el admin (rutas relativas del repo)
-      var imgSrc = imgPath
-        ? (imgPath.indexOf("http") === 0 || imgPath.charAt(0) === "/"
-          ? imgPath
-          : "/" + imgPath.replace(/^\.\//, ""))
-        : null;
 
       return h(
         "div",
@@ -125,7 +161,7 @@
               fontSize: 13,
             },
           },
-          "Sube primero la imagen del artículo (campo «Imagen») para poder encuadrarla."
+          "Sube primero la imagen del artículo (campo «Imagen») para poder encuadrarla. Si ya la subiste, espera un segundo o guarda y vuelve a abrir el ítem."
         ),
 
         imgSrc &&
@@ -139,7 +175,6 @@
               alignItems: "flex-start",
             },
           },
-          // --- Foto completa + marcador ---
           h(
             "div",
             { style: { flex: "1 1 280px", maxWidth: 420 } },
@@ -169,7 +204,6 @@
                   pointerEvents: "none",
                 },
               }),
-              // Cruz / punto
               h("div", {
                 style: {
                   position: "absolute",
@@ -202,7 +236,6 @@
             )
           ),
 
-          // --- Preview tipo card ---
           h(
             "div",
             { style: { flex: "0 0 auto" } },
@@ -256,31 +289,23 @@
               h(
                 "div",
                 { style: { padding: "10px 12px" } },
-                h(
-                  "div",
-                  {
-                    style: {
-                      height: 10,
-                      width: "70%",
-                      background: "#eee",
-                      borderRadius: 2,
-                      marginBottom: 6,
-                    },
+                h("div", {
+                  style: {
+                    height: 10,
+                    width: "70%",
+                    background: "#eee",
+                    borderRadius: 2,
+                    marginBottom: 6,
                   },
-                  null
-                ),
-                h(
-                  "div",
-                  {
-                    style: {
-                      height: 8,
-                      width: "90%",
-                      background: "#f3f3f3",
-                      borderRadius: 2,
-                    },
+                }),
+                h("div", {
+                  style: {
+                    height: 8,
+                    width: "90%",
+                    background: "#f3f3f3",
+                    borderRadius: 2,
                   },
-                  null
-                )
+                })
               )
             )
           )
@@ -300,5 +325,5 @@
   });
 
   CMS.registerWidget("focal-point", FocalPointControl, FocalPointPreview);
-  console.info('[focal-point] Widget "focal-point" registrado');
+  console.info('[focal-point] Widget "focal-point" registrado (v2 lista-aware)');
 })();
