@@ -1275,19 +1275,43 @@ img[src*="juancruz" i] {
   gap: var(--gap);
 }
 
-.grid-bento .card {
-  height: 100%;
+.grid-bento {
+  align-items: stretch;
 }
 
+.grid-bento .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card destacada: ocupa 2 filas y rellena toda la altura (sin hueco abajo) */
 .grid-bento .card:nth-child(1) {
   grid-column: 1;
   grid-row: 1 / span 2;
+  align-self: stretch;
+  height: 100%;
+}
+
+/* La imagen crece y absorbe el espacio extra; el texto queda abajo */
+.grid-bento .card:nth-child(1) .card-media {
+  flex: 1 1 auto;
   height: auto;
-  align-self: start;
+  min-height: 220px;
+  max-height: none;
+  aspect-ratio: unset;
 }
 
 .grid-bento .card:nth-child(1) .card-body {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
+}
+
+.grid-bento .card:nth-child(1) .card-body h3 {
+  font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+}
+
+.grid-bento .card:nth-child(1) .card-excerpt {
+  -webkit-line-clamp: 4;
 }
 
 .grid-bento .card:nth-child(2) {
@@ -1300,24 +1324,11 @@ img[src*="juancruz" i] {
   grid-row: 2;
 }
 
-.grid-bento .card:nth-child(1) .card-media {
-  aspect-ratio: 16 / 11;
-  height: auto;
-  max-height: 300px;
-}
-
-.grid-bento .card:nth-child(1) .card-body h3 {
-  font-size: clamp(1.4rem, 2.2vw, 1.7rem);
-}
-
-.grid-bento .card:nth-child(1) .card-excerpt {
-  -webkit-line-clamp: 4;
-}
-
 .grid-bento .card:nth-child(2) .card-media,
 .grid-bento .card:nth-child(3) .card-media {
-  height: 150px;
-  min-height: 150px;
+  height: 160px;
+  min-height: 160px;
+  flex: 0 0 auto;
 }
 
 @media (max-width: 900px) {
@@ -1331,16 +1342,19 @@ img[src*="juancruz" i] {
   .grid-bento .card:nth-child(3) {
     grid-column: 1;
     grid-row: auto;
+    height: auto;
   }
 
   .grid-bento .card:nth-child(1) .card-media {
+    flex: none;
     min-height: 240px;
+    height: 240px;
   }
 
   .grid-bento .card:nth-child(2) .card-media,
   .grid-bento .card:nth-child(3) .card-media {
-    height: 240px;
-    min-height: 240px;
+    height: 220px;
+    min-height: 220px;
   }
 }
 
