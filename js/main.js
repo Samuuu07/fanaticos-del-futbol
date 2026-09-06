@@ -101,10 +101,11 @@ function renderTicker() {
 
 /* ---------- Tarjeta de artículo ---------- */
 function articleCardHTML(a, index) {
+  const pos = escapeHtml(a.imagen_pos || "center center");
   return `
     <a class="card reveal" href="articulos/${escapeHtml(a.id)}.html" style="transition-delay:${(index % 3) * 80}ms">
       <div class="card-media">
-        <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy">
+        <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy" style="object-position:${pos}">
         <span class="card-tag">${escapeHtml(a.categoria)}</span>
       </div>
       <div class="card-body">
@@ -163,71 +164,11 @@ function injectStaticIcons() {
   if (toggle) toggle.innerHTML = ICONS.menu;
 }
 
-
-/* ---------- Widget clasificación centrado en Burgos ---------- */
-async function renderStandings() {
-  const root = document.querySelector("[data-standings]");
-  if (!root) return;
-  const rowsEl = root.querySelector("[data-standings-rows]");
-  const updatedEl = root.querySelector("[data-standings-updated]");
-  if (!rowsEl) return;
-
-  try {
-    const res = await fetch("data/clasificacion.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    const equipos = Array.isArray(data.equipos) ? data.equipos : [];
-    const focoNombre = (data.equipo_foco || "Burgos CF").toLowerCase();
-    const focoIdx = equipos.findIndex(e =>
-      String(e.nombre || "").toLowerCase().includes("burgos") ||
-      String(e.nombre || "").toLowerCase() === focoNombre
-    );
-
-    if (focoIdx < 0) {
-      rowsEl.innerHTML = `<p class="standings-empty">No se encontró al Burgos CF en la clasificación.</p>`;
-      return;
-    }
-
-    // 2 arriba + Burgos + 2 abajo (ajusta si está cerca del borde)
-    const from = Math.max(0, focoIdx - 2);
-    const to = Math.min(equipos.length, focoIdx + 3);
-    const slice = equipos.slice(from, to);
-
-    if (updatedEl && data.actualizado) {
-      const d = String(data.actualizado);
-      // YYYY-MM-DD → DD/MM
-      const m = d.match(/^(\d{4})-(\d{2})-(\d{2})/);
-      updatedEl.textContent = m ? `Act. ${m[3]}/${m[2]}` : `Act. ${d}`;
-    }
-
-    const leagueEl = root.querySelector(".standings-league");
-    if (leagueEl && data.liga) leagueEl.textContent = data.liga;
-
-    const linkEl = root.querySelector(".standings-link");
-    if (linkEl && data.enlace_completo) linkEl.href = data.enlace_completo;
-
-    rowsEl.innerHTML = slice.map(e => {
-      const isFocus = String(e.nombre || "").toLowerCase().includes("burgos");
-      return `
-        <div class="standings-row${isFocus ? " is-focus" : ""}">
-          <span class="standings-pos">${escapeHtml(e.pos)}</span>
-          <span class="standings-name">${escapeHtml(e.nombre)}</span>
-          <span class="standings-pj">${escapeHtml(e.pj)} PJ</span>
-          <span class="standings-pts">${escapeHtml(e.pts)}</span>
-        </div>`;
-    }).join("");
-  } catch (err) {
-    console.error("Error cargando clasificación:", err);
-    rowsEl.innerHTML = `<p class="standings-empty">Clasificación no disponible.</p>`;
-  }
-}
-
 /* ---------- Init general ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   injectStaticIcons();
   initNav();
   initFooterYear();
-  renderStandings();
 });
 
 document.addEventListener("datosListos", () => {

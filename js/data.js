@@ -77,6 +77,7 @@ async function cargarArticulos() {
         titulo: a.titulo,
         fecha: a.fecha,
         imagen: a.imagen,
+        imagen_pos: a.imagen_pos || "center center",
         resumen,
         categoria: a.categoria,
         autor: a.autor || "Manuel Cavia",

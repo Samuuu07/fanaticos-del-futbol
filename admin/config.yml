@@ -40,6 +40,12 @@ collections:
                 time_format: false
                 format: "DD/MM/YYYY"
               - { label: "Imagen", name: "imagen", widget: "image" }
+              - label: "Encuadre para tarjeta"
+                name: "imagen_pos"
+                widget: "focal-point"
+                required: false
+                default: "center center"
+                hint: "Clic en la zona importante. Solo afecta a las cards."
               - label: "Contenido"
                 name: "contenido"
                 widget: "markdown"
