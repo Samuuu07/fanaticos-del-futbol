@@ -649,6 +649,7 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
 }
 
@@ -754,6 +755,7 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
 }
 
 .program-date {
@@ -1144,6 +1146,7 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   display: block;
 }
 
