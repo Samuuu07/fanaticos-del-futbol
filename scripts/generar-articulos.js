@@ -254,6 +254,7 @@ function articuloHTML(art, prev, next) {
             .article-nav-card.next { text-align: left; }
         }
     </style>
+    <script data-goatcounter="https://fanaticosdelfutbol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 
 <body>
