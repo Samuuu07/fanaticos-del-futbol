@@ -121,10 +121,10 @@ function articleCardHTML(a, index) {
 function programRowHTML(p, index) {
   return `
     <div class="program-row reveal" style="transition-delay:${(index % 6) * 60}ms">
-      <div class="program-thumb"><img src="${escapeHtml(p.imagen)}" alt="${escapeHtml(p.titulo)}" loading="lazy"></div>
-      <div class="program-date">${escapeHtml(p.fecha)}</div>
-      <div class="program-title">${escapeHtml(p.titulo)}</div>
-      <a class="program-listen" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="Se abre en una pestaña nueva, en una web externa">Escuchar ${ICONS.play}<span class="external-hint" aria-hidden="true">${ICONS.external}</span><span class="sr-only"> (enlace externo, se abre en una pestaña nueva)</span></a>
+    <div class="program-thumb"><img src="${escapeHtml(p.imagen)}" alt="${escapeHtml(p.titulo)}" loading="lazy" style="object-position:${escapeHtml(p.imagen_pos || 'center 20%')}"></div>
+    <div class="program-date">${escapeHtml(p.fecha)}</div>
+    <div class="program-title">${escapeHtml(p.titulo)}</div>
+    <a class="program-listen" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="Se abre en una pestaña nueva, en una web externa">Escuchar ${ICONS.play}<span class="external-hint" aria-hidden="true">${ICONS.external}</span><span class="sr-only"> (enlace externo, se abre en una pestaña nueva)</span></a>
     </div>
   `;
 }

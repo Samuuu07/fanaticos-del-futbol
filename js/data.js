@@ -98,11 +98,11 @@ async function cargarProgramas() {
     const res = await fetch("data/programas.json", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
-
     window.PROGRAMAS = (data.programas || []).map(p => ({
       titulo: p.titulo,
       fecha: p.fecha,
       imagen: p.imagen || "img/viveradio.jpg",
+      imagen_pos: p.imagen_pos || "center 20%",
       link: p.link
     }));
   } catch (err) {
