@@ -1,6 +1,13 @@
 {
   "programas": [
     {
+      "imagen_pos": "center center",
+      "fecha": "20/10/2026",
+      "link": "https://open.spotify.com/episode/4S3vxqQKadgxQ97WjS7AY4?si=ahfo8p7aScm9pgCv8tWr5w&utm_source=copy-link",
+      "imagen": "img/whatsapp-image-2026-09-30-at-22.09.15.jpeg",
+      "titulo": "#4 Fanáticos del Burgos BCF-SAB (1-0)"
+    },
+    {
       "imagen_pos": "49% 62%",
       "link": "https://open.spotify.com/episode/0cj857JzCIzeM9JLI2o3c5?si=mNYrUSP3Q-yUw0iFMVFMyg&utm_source=whatsapp",
       "titulo": "#3 Fanáticos del Burgos BCF-GCF (0-1)",
