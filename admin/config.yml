@@ -28,6 +28,14 @@ collections:
                 pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Solo minúsculas, números y guiones, sin espacios ni tildes. Ej: mi-articulo-nuevo"]
                 hint: "IMPORTANTE: rellénalo solo la primera vez, al crear el artículo. Si lo cambias después de publicar, el enlace que ya compartiste deja de funcionar. No lo edites en artículos que ya estén publicados."
               - { label: "Título", name: "titulo", widget: "string" }
+              - label: "Caja del título y del lead"
+                name: "caja"
+                widget: "select"
+                options:
+                  - { label: "Mayúsculas (estilo actual)", value: "mayusculas" }
+                  - { label: "Normal (como se escribe)", value: "normal" }
+                default: "mayusculas"
+                hint: "Solo afecta a la página del artículo (título + primer párrafo / encabezados). Las tarjetas de la portada siempre muestran el título en caja normal."
               - label: "Categoría"
                 name: "categoria"
                 widget: "select"

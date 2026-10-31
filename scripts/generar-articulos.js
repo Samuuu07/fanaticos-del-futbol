@@ -121,6 +121,10 @@ const preparados = articulos.map(a => {
   let resumen = markdownATextoPlano(primerParrafo);
   if (resumen.length > 160) resumen = resumen.slice(0, 157).trim() + "...";
 
+  // "mayusculas" = comportamiento actual (CSS text-transform: uppercase)
+  // "normal"    = se muestra tal como se escribió en el CMS
+  const caja = (a.caja === "normal") ? "normal" : "mayusculas";
+
   return {
     id: a.id,
     titulo: a.titulo || "",
@@ -129,7 +133,8 @@ const preparados = articulos.map(a => {
     categoria: a.categoria || "",
     autor: a.autor || "Manuel Cavia",
     resumen,
-    parrafos
+    parrafos,
+    caja
   };
 });
 
@@ -151,6 +156,8 @@ function articuloHTML(art, prev, next) {
   const imagenAbs = absoluteUrl(art.imagen);
   const tituloEsc = escapeHtml(art.titulo);
   const resumenEsc = escapeHtml(art.resumen);
+  // Clase en <body> para controlar mayúsculas/minúsculas del título y lead
+  const bodyCaseClass = art.caja === "normal" ? "article-case-normal" : "article-case-upper";
 
   const parrafosHTML = art.parrafos.length
     ? art.parrafos.map(bloqueMarkdownAHtml).join("\n              ")
@@ -213,7 +220,19 @@ function articuloHTML(art, prev, next) {
         .article-header .eyebrow::before, .article-header .eyebrow::after { content: none !important; display: none !important; }
         .article-header h1 {
             font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.1;
-            margin-top: 0.5rem; margin-bottom: 1rem; color: var(--black); text-transform: uppercase;
+            margin-top: 0.5rem; margin-bottom: 1rem; color: var(--black);
+        }
+        /* Por defecto (mayúsculas): comportamiento histórico */
+        .article-case-upper .article-header h1,
+        .article-case-upper .article-content .article-heading,
+        .article-case-upper .article-content .article-subheading {
+            text-transform: uppercase;
+        }
+        /* Opción "Normal": se respeta la capitalización escrita en el CMS */
+        .article-case-normal .article-header h1,
+        .article-case-normal .article-content .article-heading,
+        .article-case-normal .article-content .article-subheading {
+            text-transform: none;
         }
         .article-meta {
             display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono);
@@ -227,11 +246,11 @@ function articuloHTML(art, prev, next) {
         .article-content p:first-of-type { font-size: 1.28rem; line-height: 1.6; color: var(--black); font-weight: 500; }
         .article-content strong { color: var(--black); font-weight: 700; }
         .article-content .article-heading {
-            font-family: var(--font-display); text-transform: uppercase; color: var(--black);
+            font-family: var(--font-display); color: var(--black);
             font-size: 1.5rem; margin: 2.4rem 0 1rem;
         }
         .article-content .article-subheading {
-            font-family: var(--font-display); text-transform: uppercase; color: var(--red);
+            font-family: var(--font-display); color: var(--red);
             font-size: 1.1rem; margin: 1.8rem 0 0.75rem;
         }
         .article-content::after { content: ""; display: table; clear: both; }
@@ -257,7 +276,7 @@ function articuloHTML(art, prev, next) {
     <script data-goatcounter="https://fanaticosdelfutbol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 
-<body>
+<body class="${bodyCaseClass}">
 
     <header class="site-header">
         <div class="wrap">
