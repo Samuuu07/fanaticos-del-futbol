@@ -2,6 +2,13 @@
   "programas": [
     {
       "imagen_pos": "center center",
+      "link": "https://open.spotify.com/episode/43wjMP3lPdYyvkzNlDsWzD?si=bd9e99hASCKoVBD36A-xlg&utm_source=whatsapp",
+      "titulo": "#6 Fanáticos del Burgos BCF-CAS (1-1)",
+      "fecha": "03/11/2026",
+      "imagen": "img/whatsapp-image-2026-09-30-at-22.09.15.jpeg"
+    },
+    {
+      "imagen_pos": "center center",
       "link": "https://open.spotify.com/episode/1oyUzdMtl3iST6sq2NE180?si=po_FWSPeTTS5duVaf80_nA&utm_source=copy-link",
       "imagen": "img/whatsapp-image-2026-09-30-at-22.09.15.jpeg",
       "fecha": "27/10/2026",
