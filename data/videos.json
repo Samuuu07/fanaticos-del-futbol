@@ -1,18 +1,18 @@
 {
   "videos": [
     {
-      "transcripcion": "tttt",
+      "transcripcion": "",
       "imagen_pos": "27% 88%",
-      "persona": "t",
-      "descripcion": "tttt",
+      "persona": "",
+      "descripcion": "",
       "url": "https://www.youtube.com/watch?v=ebWmGWcvR8E",
       "imagen": "img/dsc02457.jpg.jpeg",
-      "tipo": "Vídeo",
-      "formato": "horizontal",
-      "titulo": "ESTO es Una PrueBA",
-      "articulo": "un-pequeno-bache-para-ser-mas-fuertes",
+      "tipo": "Entrevista",
+      "formato": "vertical",
+      "titulo": "PRUEBA",
+      "articulo": "",
       "id": "video-prueba",
-      "fecha": "26/11/2026"
+      "fecha": "26/10/2026"
     }
   ]
 }
