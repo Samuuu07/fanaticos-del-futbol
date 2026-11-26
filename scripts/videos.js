@@ -1,5 +1,149 @@
 const { escapeHtml, slugLooksValid } = require("./html");
 
+/**
+ * Detecta el origen del vídeo y extrae los datos necesarios.
+ * Soporta:
+ *   - archivo local  → campo "archivo" (ej: "videos/entrevista.mp4")
+ *   - YouTube        → url de youtube.com / youtu.be / shorts
+ *   - Instagram Reel → url de instagram.com/reel/ o /p/
+ *   - TikTok         → url de tiktok.com/@user/video/ID
+ *
+ * El formato (vertical / horizontal) se detecta automáticamente:
+ *   - Instagram y TikTok → siempre vertical
+ *   - YouTube Shorts     → vertical
+ *   - YouTube normal     → horizontal
+ *   - Archivo local      → horizontal (se puede forzar con "formato": "vertical")
+ * Si el usuario pone "formato" a mano, ese valor tiene prioridad.
+ */
+function resolverOrigen(video) {
+  // 1. Archivo original subido al repositorio
+  if (video.archivo) {
+    const archivo = String(video.archivo).replace(/^\/+/, "");
+    if (!/^(videos|media|img)\//.test(archivo) || archivo.includes("..")) {
+      throw new Error(
+        `Ruta de archivo no válida en el vídeo "${video.id}". Usa "videos/nombre.mp4" o "media/nombre.mp4".`
+      );
+    }
+    if (!/\.(mp4|webm|ogg|mov)$/i.test(archivo)) {
+      throw new Error(
+        `Formato de vídeo no soportado en "${video.id}". Usa mp4, webm, ogg o mov.`
+      );
+    }
+    return {
+      origen: "archivo",
+      archivo,
+      enlaceExterno: null,
+      etiquetaExterna: null,
+      formatoDetectado: "horizontal" // por defecto; se puede forzar con el campo formato
+    };
+  }
+
+  if (!video.url || typeof video.url !== "string") {
+    throw new Error(
+      `El vídeo "${video.id}" necesita un campo "url" (YouTube / Instagram / TikTok) o "archivo" (vídeo original).`
+    );
+  }
+
+  let source;
+  try {
+    source = new URL(video.url.trim());
+  } catch {
+    throw new Error(`URL inválida en el vídeo "${video.id}": ${video.url}`);
+  }
+
+  if (source.protocol !== "https:") {
+    throw new Error(`La URL del vídeo "${video.id}" debe usar https.`);
+  }
+
+  const host = source.hostname.replace(/^www\./, "");
+  const path = source.pathname;
+  const segments = path.split("/").filter(Boolean);
+
+  // 2. YouTube
+  if (host === "youtu.be" || host === "youtube.com" || host === "m.youtube.com") {
+    let youtubeId;
+    let esShort = false;
+
+    if (host === "youtu.be") {
+      youtubeId = segments[0];
+    } else {
+      if (segments[0] === "shorts") {
+        youtubeId = segments[1];
+        esShort = true;
+      } else if (segments[0] === "watch") {
+        youtubeId = source.searchParams.get("v");
+      } else if (["embed", "live"].includes(segments[0])) {
+        youtubeId = segments[1];
+      }
+    }
+
+    if (typeof youtubeId !== "string" || !/^[\w-]{11}$/.test(youtubeId)) {
+      throw new Error(`Revisa el enlace de YouTube del vídeo "${video.id}".`);
+    }
+
+    return {
+      origen: "youtube",
+      youtubeId,
+      enlaceExterno: `https://www.youtube.com/watch?v=${youtubeId}`,
+      etiquetaExterna: "Ver en YouTube",
+      formatoDetectado: esShort ? "vertical" : "horizontal"
+    };
+  }
+
+  // 3. Instagram (Reel o post) → casi siempre vertical
+  if (host === "instagram.com") {
+    const tipo = segments[0];
+    const code = segments[1];
+    if (!["reel", "p", "tv"].includes(tipo) || !code || !/^[A-Za-z0-9_-]+$/.test(code)) {
+      throw new Error(
+        `Enlace de Instagram no válido en "${video.id}". Usa un enlace de Reel o publicación (ej: https://www.instagram.com/reel/XXXX/).`
+      );
+    }
+    const permalink = `https://www.instagram.com/${tipo}/${code}/`;
+    return {
+      origen: "instagram",
+      instagramPermalink: permalink,
+      enlaceExterno: permalink,
+      etiquetaExterna: "Ver en Instagram",
+      formatoDetectado: "vertical"
+    };
+  }
+
+  // 4. TikTok → siempre vertical
+  if (host === "tiktok.com" || host.endsWith(".tiktok.com")) {
+    let videoId = null;
+    const videoIdx = segments.indexOf("video");
+    if (videoIdx >= 0 && segments[videoIdx + 1]) {
+      videoId = segments[videoIdx + 1];
+    }
+    if (!videoId && segments[0] === "v" && segments[1]) {
+      videoId = segments[1];
+    }
+    if (!videoId) {
+      videoId = source.searchParams.get("item_id") || source.searchParams.get("video_id");
+    }
+    if (!videoId || !/^\d+$/.test(videoId)) {
+      throw new Error(
+        `Enlace de TikTok no válido en "${video.id}". Usa el enlace completo del vídeo (ej: https://www.tiktok.com/@usuario/video/1234567890).`
+      );
+    }
+    const permalink = video.url.split("?")[0];
+    return {
+      origen: "tiktok",
+      tiktokId: videoId,
+      tiktokPermalink: permalink,
+      enlaceExterno: permalink,
+      etiquetaExterna: "Ver en TikTok",
+      formatoDetectado: "vertical"
+    };
+  }
+
+  throw new Error(
+    `Origen no soportado en el vídeo "${video.id}". ` +
+    `Usa un archivo local ("archivo"), YouTube, Instagram Reel o TikTok.`
+  );
+}
+
 function prepararVideos(data) {
   const ids = new Set();
   const videos = (data.videos || []).map(video => {
@@ -7,31 +151,42 @@ function prepararVideos(data) {
       throw new Error("Identificador de vídeo inválido o repetido: " + video.id);
     }
     ids.add(video.id);
-    const source = new URL(video.url);
-    const segments = source.pathname.split("/").filter(Boolean);
-    let youtubeId;
-    if (source.hostname === "youtu.be") youtubeId = segments[0];
-    if (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(source.hostname)) {
-      youtubeId = segments[0] === "watch" ? source.searchParams.get("v") :
-        ["shorts", "embed", "live"].includes(segments[0]) && segments[1];
-    }
-    if (source.protocol !== "https:" || typeof youtubeId !== "string" || !/^[\w-]{11}$/.test(youtubeId)) {
-      throw new Error("Revisa el enlace de YouTube del vídeo " + video.id);
-    }
+
+    const origenData = resolverOrigen(video);
+
     const imagen = String(video.imagen || "").replace(/^\/?(img\/)/, "$1");
     if (!imagen.startsWith("img/") || imagen.split("/").includes("..")) {
       throw new Error("Selecciona una miniatura de la biblioteca para " + video.id);
     }
+
     const [day, month, year] = String(video.fecha).split("/");
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(video.fecha)) throw new Error("Revisa la fecha de " + video.id);
-    return { ...video, imagen, youtubeId, fechaISO: [year, month, day].join("-") };
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(video.fecha)) {
+      throw new Error("Revisa la fecha de " + video.id);
+    }
+
+    // Formato: si el usuario lo pone a mano tiene prioridad; si no, usamos el detectado
+    const formato =
+      video.formato === "vertical" || video.formato === "horizontal"
+        ? video.formato
+        : origenData.formatoDetectado || "horizontal";
+
+    return {
+      ...video,
+      imagen,
+      fechaISO: [year, month, day].join("-"),
+      formato,
+      ...origenData
+    };
   });
   return videos.sort((a, b) => b.fechaISO.localeCompare(a.fechaISO));
 }
 
 function tarjeta(video) {
-  const pos = /^(?:center|left|right|\d{1,3}%)(?: (?:center|top|bottom|\d{1,3}%))?$/.test(video.imagen_pos)
-    ? video.imagen_pos : "center center";
+  const pos = /^(?:center|left|right|\d{1,3}%)(?: (?:center|top|bottom|\d{1,3}%))?$/.test(
+    video.imagen_pos
+  )
+    ? video.imagen_pos
+    : "center center";
   return `<a class="card video-card" href="videos/${video.id}.html">
           <div class="card-media">
             <img src="${escapeHtml(video.imagen)}" loading="lazy" alt="" style="--card-focus:${pos}">
@@ -66,12 +221,73 @@ function actualizarBloque(html, contenido) {
   const end = html.indexOf(fin);
   if (start < 0 || end < start) throw new Error("Faltan los marcadores de la sección de vídeos.");
   const indent = html.slice(html.lastIndexOf("\n", start) + 1, start);
-  return html.slice(0, start + inicio.length) + "\n" + (contenido ? indent + contenido + "\n" : "") + indent + html.slice(end);
+  return (
+    html.slice(0, start + inicio.length) +
+    "\n" +
+    (contenido ? indent + contenido + "\n" : "") +
+    indent +
+    html.slice(end)
+  );
+}
+
+/**
+ * Genera el HTML del reproductor según el origen del vídeo.
+ */
+function htmlReproductor(video) {
+  const titulo = escapeHtml(video.titulo);
+  const vertical = video.formato === "vertical";
+  const clase = `video-player${vertical ? " video-vertical" : ""}`;
+
+  switch (video.origen) {
+    case "archivo": {
+      const src = "../" + escapeHtml(video.archivo);
+      const poster = video.imagen ? ` poster="../${escapeHtml(video.imagen)}"` : "";
+      const ext = video.archivo.split(".").pop().toLowerCase();
+      const mime = ext === "mov" ? "video/quicktime" : `video/${ext}`;
+      return `<div class="${clase}">
+            <video controls playsinline preload="metadata"${poster} title="${titulo}">
+              <source src="${src}" type="${mime}">
+              Tu navegador no soporta la reproducción de vídeo.
+            </video>
+          </div>`;
+    }
+
+    case "youtube":
+      return `<div class="${clase}">
+            <iframe src="https://www.youtube-nocookie.com/embed/${video.youtubeId}" title="${titulo}"
+              referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>`;
+
+    case "instagram":
+      return `<div class="${clase} video-embed-instagram">
+            <blockquote class="instagram-media" data-instgrm-permalink="${escapeHtml(video.instagramPermalink)}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; margin:1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+              <a href="${escapeHtml(video.instagramPermalink)}" target="_blank" rel="noopener">Ver esta publicación en Instagram</a>
+            </blockquote>
+          </div>
+          <script async src="https://www.instagram.com/embed.js"></script>`;
+
+    case "tiktok":
+      return `<div class="${clase} video-embed-tiktok">
+            <blockquote class="tiktok-embed" cite="${escapeHtml(video.tiktokPermalink)}" data-video-id="${escapeHtml(video.tiktokId)}" style="max-width:605px;min-width:325px;">
+              <section>
+                <a target="_blank" rel="noopener" href="${escapeHtml(video.tiktokPermalink)}">Ver en TikTok</a>
+              </section>
+            </blockquote>
+          </div>
+          <script async src="https://www.tiktok.com/embed.js"></script>`;
+
+    default:
+      return `<p class="empty-state">No se puede reproducir este vídeo.</p>`;
+  }
 }
 
 function contenidoVideo(video, articulo) {
   const titulo = escapeHtml(video.titulo);
-  const vertical = video.formato === "vertical";
+  const enlace =
+    video.enlaceExterno && video.etiquetaExterna
+      ? `<a class="section-link" href="${escapeHtml(video.enlaceExterno)}" target="_blank" rel="noopener">${escapeHtml(video.etiquetaExterna)}</a>`
+      : "";
+
   return `<article class="article-layout video-story">
           <header class="article-header">
             <a class="back-link" href="../videos.html">Volver a vídeos y entrevistas</a>
@@ -81,11 +297,8 @@ function contenidoVideo(video, articulo) {
               ${video.persona ? `<span>Con <strong>${escapeHtml(video.persona)}</strong></span>` : ""}
             </div>
           </header>
-          <div class="video-player${vertical ? " video-vertical" : ""}">
-            <iframe src="https://www.youtube-nocookie.com/embed/${video.youtubeId}" title="${titulo}"
-              referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <a class="section-link" href="https://www.youtube.com/watch?v=${video.youtubeId}">Ver en YouTube</a>
+          ${htmlReproductor(video)}
+          ${enlace}
           ${video.descripcion ? `<p class="video-description">${escapeHtml(video.descripcion)}</p>` : ""}
           ${video.transcripcion ? `<details class="video-transcript"><summary>Leer la transcripción</summary><p>${escapeHtml(video.transcripcion)}</p></details>` : ""}
           ${articulo ? `<p class="video-related">Artículo relacionado · <a class="section-link" href="../articulos/${articulo.id}.html">${escapeHtml(articulo.titulo)}</a></p>` : ""}
