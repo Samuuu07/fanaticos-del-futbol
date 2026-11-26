@@ -1,0 +1,9 @@
+.crop-editor { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 1rem; max-width: 44rem; }
+.crop-editor p { margin: 0 0 .6rem; font-weight: 600; }
+.crop-source { position: relative; cursor: crosshair; overflow: hidden; width: fit-content; max-width: 100%; }
+.crop-source img { display: block; max-width: 100%; max-height: 20rem; }
+.crop-marker { position: absolute; transform: translate(-50%, -50%); width: 16px; height: 16px; border: 2px solid white; border-radius: 50%; background: #bd1933; box-shadow: 0 0 0 1px #222; pointer-events: none; }
+.crop-preview { display: block; width: 100%; object-fit: cover; border-radius: .25rem; }
+.crop-axis { margin-top: .5rem; display: grid; gap: .5rem; grid-template-columns: 5rem minmax(0, 1fr); align-items: center; }
+.crop-axis input { width: 100%; }
+.crop-inherit { display: block; margin-top: .65rem; }

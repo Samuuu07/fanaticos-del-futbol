@@ -1,20 +1,23 @@
 #!/usr/bin/env node
 /* ============================================================
-   FANÁTICOS DEL FÚTBOL — Generador de páginas de artículo
+   FANÁTICOS DEL FÚTBOL — Generador de contenido estático
    ------------------------------------------------------------
-   Lee data/articulos.json y genera:
+   Lee data/articulos.json y data/videos.json y genera:
      - articulos/<id>.html   (uno por artículo, con Open Graph
        reales, diseño idéntico a la web, sin depender de JS
        para pintar el contenido)
-     - sitemap.xml            (páginas fijas + una por artículo)
+     - videos/<id>.html       y tarjetas en index.html y videos.html
+     - sitemap.xml            (páginas fijas, artículos y vídeos)
 
    Se ejecuta automáticamente desde GitHub Actions cada vez que
-   cambia data/articulos.json. El "id" de cada artículo (campo
+   cambia uno de los dos JSON. El "id" de cada artículo (campo
    fijo, ya validado por el CMS) es la única fuente de verdad
    para la URL — nunca se recalcula desde el título aquí.
    ============================================================ */
 
 const fs = require("fs");
+const { escapeHtml, slugLooksValid } = require("./html");
+const { prepararVideos, contenidoVideo, tarjetasVideo, actualizarBloque } = require("./videos");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -28,17 +31,6 @@ const REDES = {
   x: "https://x.com/FannaticosF",
   tiktok: "https://www.tiktok.com/@fanaticosdelfutbolll?_t=8rCnwKtU8vp&_r=1"
 };
-
-/* ---------- Utilidades ---------- */
-function escapeHtml(value) {
-  if (value === null || value === undefined) return "";
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 /* ---------- Markdown seguro (solo negrita, cursiva y títulos) ----------
    Nunca se confía en el texto: primero se escapa TODO como HTML (igual
@@ -79,9 +71,6 @@ function absoluteUrl(relativePath) {
   return `${SITE_URL}/${String(relativePath).replace(/^\/+/, "")}`;
 }
 
-function slugLooksValid(id) {
-  return typeof id === "string" && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(id);
-}
 
 /* ---------- Cargar y validar datos ---------- */
 if (!fs.existsSync(ARTICLES_JSON)) {
@@ -130,6 +119,7 @@ const preparados = articulos.map(a => {
     titulo: a.titulo || "",
     fecha: a.fecha || "",
     imagen: a.imagen || "img/logofanaticossinfondo.png",
+    imagenIzquierda: a.imagen_lado === "izquierda",
     categoria: a.categoria || "",
     autor: a.autor || "Manuel Cavia",
     resumen,
@@ -164,21 +154,45 @@ function articuloHTML(art, prev, next) {
     : `<p>${resumenEsc}</p>`;
 
   const navHTML = `
-            <nav class="article-nav">
+            <nav class="article-nav" aria-label="Artículos anterior y siguiente">
               ${prev ? `
                 <a href="${escapeHtml(prev.id)}.html" class="article-nav-card prev">
                   <span class="article-nav-label">&larr; Artículo anterior</span>
                   <span class="article-nav-title">${escapeHtml(prev.titulo)}</span>
                 </a>
-              ` : "<div></div>"}
+              ` : ""}
               ${next ? `
                 <a href="${escapeHtml(next.id)}.html" class="article-nav-card next">
                   <span class="article-nav-label">Siguiente artículo &rarr;</span>
                   <span class="article-nav-title">${escapeHtml(next.titulo)}</span>
                 </a>
-              ` : "<div></div>"}
+              ` : ""}
             </nav>`;
 
+  const contenido = `<article class="article-layout">
+            <header class="article-header">
+                <a class="back-link" href="../articulos.html">&larr; Volver a todos los artículos</a>
+                <span class="eyebrow">${escapeHtml(art.categoria)}</span>
+                <h1>${tituloEsc}</h1>
+                <div class="article-meta">
+                    <span>Por <strong>${escapeHtml(art.autor)}</strong></span>
+                    <span>•</span>
+                    <span>${escapeHtml(art.fecha)}</span>
+                </div>
+            </header>
+
+            <div class="article-content">
+              <figure class="article-featured-media${art.imagenIzquierda ? " article-featured-media--left" : ""}">
+                <img src="../${escapeHtml(art.imagen)}" alt="${tituloEsc}">
+              </figure>
+              ${parrafosHTML}
+            </div>
+            ${navHTML}
+        </article>`;
+  return paginaDetalle({ canonical, imagenAbs, tituloEsc, resumenEsc, bodyClass: bodyCaseClass, contenido });
+}
+
+function paginaDetalle({ canonical, imagenAbs, tituloEsc, resumenEsc, bodyClass, contenido, esVideo = false }) {
   return `<!doctype html>
 <html lang="es">
 
@@ -189,7 +203,7 @@ function articuloHTML(art, prev, next) {
     <meta name="description" content="${resumenEsc}">
     <link rel="canonical" href="${canonical}">
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="${esVideo ? "video.other" : "article"}">
     <meta property="og:site_name" content="Fanáticos del Fútbol">
     <meta property="og:title" content="${tituloEsc}">
     <meta property="og:description" content="${resumenEsc}">
@@ -207,116 +221,33 @@ function articuloHTML(art, prev, next) {
         rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="icon" type="image/png" href="../img/logofanaticossinfondo.png">
-    <style>
-        .article-layout { max-width: 1040px; margin: 0 auto; padding: 3rem 1rem 0 1rem; }
-        .article-header { margin-bottom: 2rem; }
-        .article-header .back-link {
-            display: inline-block; color: var(--red); font-family: var(--font-mono);
-            font-size: 0.85rem; text-decoration: none; font-weight: 600;
-            transition: color 0.2s ease; margin-bottom: 1rem;
-        }
-        .article-header .back-link:hover, .article-header .back-link:active { color: var(--black); }
-        .article-header .eyebrow { display: inline-block; color: var(--red); font-weight: 600; text-transform: uppercase; }
-        .article-header .eyebrow::before, .article-header .eyebrow::after { content: none !important; display: none !important; }
-        .article-header h1 {
-            font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.1;
-            margin-top: 0.5rem; margin-bottom: 1rem; color: var(--black);
-        }
-        /* Por defecto (mayúsculas): comportamiento histórico */
-        .article-case-upper .article-header h1,
-        .article-case-upper .article-content .article-heading,
-        .article-case-upper .article-content .article-subheading {
-            text-transform: uppercase;
-        }
-        /* Opción "Normal": se respeta la capitalización escrita en el CMS */
-        .article-case-normal .article-header h1,
-        .article-case-normal .article-content .article-heading,
-        .article-case-normal .article-content .article-subheading {
-            text-transform: none;
-        }
-        .article-meta {
-            display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono);
-            font-size: 0.85rem; color: var(--gray); text-transform: uppercase;
-        }
-        .article-meta strong { color: var(--black); }
-        .article-featured-media { float: right; width: 420px; max-width: 45%; margin: 0 0 1.5rem 2rem; border-radius: 6px; overflow: hidden; }
-        .article-featured-media img { width: 100%; height: auto; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
-        .article-content { font-family: var(--font-body); font-size: 1.1rem; line-height: 1.8; color: var(--black-soft); }
-        .article-content p { margin-bottom: 1.6rem; }
-        .article-content p:first-of-type { font-size: 1.28rem; line-height: 1.6; color: var(--black); font-weight: 500; }
-        .article-content strong { color: var(--black); font-weight: 700; }
-        .article-content .article-heading {
-            font-family: var(--font-display); color: var(--black);
-            font-size: 1.5rem; margin: 2.4rem 0 1rem;
-        }
-        .article-content .article-subheading {
-            font-family: var(--font-display); color: var(--red);
-            font-size: 1.1rem; margin: 1.8rem 0 0.75rem;
-        }
-        .article-content::after { content: ""; display: table; clear: both; }
-        .article-nav {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 4rem;
-            margin-bottom: 6rem; padding-top: 2rem; border-top: 1px solid var(--line); clear: both;
-        }
-        .article-nav-card {
-            display: flex; flex-direction: column; padding: 1.25rem; background: var(--white);
-            border: 1px solid var(--line); text-decoration: none;
-            transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
-        }
-        .article-nav-card:hover { border-color: var(--black); transform: translateY(-3px); }
-        .article-nav-card.next { text-align: right; }
-        .article-nav-label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; color: var(--gray); letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-        .article-nav-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--black); line-height: 1.2; }
-        @media (max-width: 768px) {
-            .article-featured-media { float: none; width: 100%; max-width: 100%; margin: 0 0 1.5rem 0; }
-            .article-nav { grid-template-columns: 1fr; margin-bottom: 3rem; }
-            .article-nav-card.next { text-align: left; }
-        }
-    </style>
     <script data-goatcounter="https://fanaticosdelfutbol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 
-<body class="${bodyCaseClass}">
+<body class="${bodyClass}">
 
+    <a class="skip-link" href="#article-main">Saltar al contenido</a>
     <header class="site-header">
         <div class="wrap">
             <a class="brand" href="../" aria-label="Fanáticos del Fútbol — Inicio">
-                <img src="../img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+                <img src="../img/logofanaticossinfondo.png" srcset="../img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
                 <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
             </a>
-            <nav class="main-nav">
+            <nav class="main-nav" id="menu-principal" aria-label="Navegación principal">
                 <a href="../">Inicio</a>
-                <a href="../articulos.html" aria-current="page">Artículos</a>
+                <a href="../articulos.html"${esVideo ? "" : ' aria-current="page"'}>Artículos</a>
                 <a href="../programas.html">Programas</a>
+                <a href="../videos.html"${esVideo ? ' aria-current="page"' : ""}>Vídeos y entrevistas</a>
+                <a href="../index.html#quienes-somos">Quiénes somos</a>
                 <div class="header-social">${socialIconsHTML()}
                 </div>
             </nav>
-            <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+            <button type="button" aria-controls="menu-principal" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
         </div>
     </header>
 
     <main id="article-main">
-        <div class="article-layout">
-            <header class="article-header">
-                <a class="back-link" href="../articulos.html">&larr; Volver a todos los artículos</a>
-                <br>
-                <span class="eyebrow">${escapeHtml(art.categoria)}</span>
-                <h1>${tituloEsc}</h1>
-                <div class="article-meta">
-                    <span>Por <strong>${escapeHtml(art.autor)}</strong></span>
-                    <span>•</span>
-                    <span>${escapeHtml(art.fecha)}</span>
-                </div>
-            </header>
-
-            <article class="article-content">
-              <div class="article-featured-media">
-                <img src="../${escapeHtml(art.imagen)}" alt="${tituloEsc}">
-              </div>
-              ${parrafosHTML}
-            </article>
-            ${navHTML}
-        </div>
+        ${contenido}
     </main>
 
     <footer class="site-footer">
@@ -324,7 +255,7 @@ function articuloHTML(art, prev, next) {
             <div class="footer-top">
                 <div class="footer-col">
                     <div class="footer-brand">
-                        <img src="../img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+                        <img src="../img/logofanaticossinfondo.png" srcset="../img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
                         <span class="brand-name">Fanáticos del Fútbol</span>
                     </div>
                     <p>Periodismo deportivo sobre el Burgos CF. Artículos, opinión y radio, hechos por un aficionado para aficionados.</p>
@@ -337,6 +268,7 @@ function articuloHTML(art, prev, next) {
                         <li><a href="../">Inicio</a></li>
                         <li><a href="../articulos.html">Artículos</a></li>
                         <li><a href="../programas.html">Programas</a></li>
+                        <li><a href="../videos.html">Vídeos y entrevistas</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -362,6 +294,14 @@ function articuloHTML(art, prev, next) {
 }
 
 /* ---------- Generar los HTML ---------- */
+const videos = prepararVideos(JSON.parse(fs.readFileSync(path.join(ROOT, "data", "videos.json"), "utf8")));
+const archivoVideos = tarjetasVideo(videos, false);
+const portadaVideos = tarjetasVideo(videos.slice(0, 3), true);
+const paginasConVideos = [
+  [path.join(ROOT, "videos.html"), archivoVideos],
+  [path.join(ROOT, "index.html"), portadaVideos]
+].map(([archivo, bloque]) => [archivo, actualizarBloque(fs.readFileSync(archivo, "utf8"), bloque)]);
+
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 // Limpiar HTML de artículos que ya no existen (evita basura acumulada)
@@ -385,6 +325,31 @@ preparados.forEach((art, i) => {
 });
 console.log(`✅ Generados ${preparados.length} artículos en /articulos`);
 
+/* ---------- Páginas de vídeo y colecciones ---------- */
+const carpetaVideos = path.join(ROOT, "videos");
+fs.mkdirSync(carpetaVideos, { recursive: true });
+const archivosVideos = new Set();
+for (const video of videos) {
+  const archivo = video.id + ".html";
+  archivosVideos.add(archivo);
+  const html = paginaDetalle({
+    canonical: absoluteUrl("videos/" + archivo),
+    imagenAbs: absoluteUrl(video.imagen),
+    tituloEsc: escapeHtml(video.titulo),
+    resumenEsc: escapeHtml(video.descripcion || video.titulo),
+    bodyClass: "video-detail",
+    contenido: contenidoVideo(video, preparados.find(art => art.id === video.articulo)),
+    esVideo: true
+  });
+  fs.writeFileSync(path.join(carpetaVideos, archivo), html, "utf8");
+}
+for (const file of fs.readdirSync(carpetaVideos)) {
+  if (file.endsWith(".html") && !archivosVideos.has(file)) fs.unlinkSync(path.join(carpetaVideos, file));
+}
+for (const [archivo, html] of paginasConVideos) {
+  fs.writeFileSync(archivo, html, "utf8");
+}
+
 /* ---------- Generar sitemap.xml ---------- */
 function urlEntry(loc, changefreq, priority) {
   return `  <url>
@@ -398,6 +363,8 @@ const entradas = [
   urlEntry(`${SITE_URL}/`, "weekly", "1.0"),
   urlEntry(`${SITE_URL}/articulos.html`, "weekly", "0.8"),
   urlEntry(`${SITE_URL}/programas.html`, "weekly", "0.7"),
+  urlEntry(`${SITE_URL}/videos.html`, "weekly", "0.7"),
+  ...videos.map(v => urlEntry(absoluteUrl(`videos/${v.id}.html`), "monthly", "0.6")),
   ...preparados.map(a => urlEntry(absoluteUrl(`articulos/${a.id}.html`), "monthly", "0.6"))
 ];
 

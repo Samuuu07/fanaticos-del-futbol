@@ -48,12 +48,27 @@ collections:
                 time_format: false
                 format: "DD/MM/YYYY"
               - { label: "Imagen", name: "imagen", widget: "image" }
-              - label: "Encuadre para tarjeta"
+              - label: "Posición de la foto en el artículo"
+                name: "imagen_lado"
+                widget: "select"
+                required: false
+                default: "derecha"
+                options:
+                  - { label: "Arriba a la derecha", value: "derecha" }
+                  - { label: "Arriba a la izquierda", value: "izquierda" }
+                hint: "El texto rodea la foto y continúa debajo. Los dos campos siguientes ajustan los recortes de portada y de tarjetas."
+              - label: "Encuadre de la destacada de portada (5:2)"
+                name: "imagen_pos_destacada"
+                widget: "focal-point"
+                preview_ratio: "5 / 2"
+                required: false
+                hint: "Recorte panorámico de la primera noticia. Si no eliges un punto propio, usa el de las tarjetas."
+              - label: "Encuadre para tarjetas (16:9)"
                 name: "imagen_pos"
                 widget: "focal-point"
                 required: false
                 default: "center center"
-                hint: "Clic en la zona importante. Solo afecta a las cards."
+                hint: "Para las dos noticias inferiores, el archivo de artículos y la destacada en pantallas pequeñas."
               - label: "Contenido"
                 name: "contenido"
                 widget: "markdown"
@@ -87,7 +102,57 @@ collections:
               - label: "Encuadre de la miniatura"
                 name: "imagen_pos"
                 widget: "focal-point"
+                preview_ratio: "1 / 1"
                 required: false
                 default: "center center"
                 hint: "Clic en la zona importante. Solo afecta a la miniatura del programa."
               - { label: "Enlace del programa", name: "link", widget: "string" }
+
+  - name: "videos"
+    label: "Vídeos y entrevistas"
+    files:
+      - name: "videos"
+        label: "Vídeos y entrevistas"
+        file: "data/videos.json"
+        fields:
+          - label: "Piezas publicadas"
+            name: "videos"
+            widget: "list"
+            required: false
+            add_to_top: true
+            label_singular: "vídeo"
+            summary: "{{fields.titulo}} — {{fields.fecha}}"
+            fields:
+              - label: "Identificador de la URL"
+                name: "id"
+                widget: "string"
+                pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Usa letras minúsculas, números y guiones."]
+                hint: "Elige un identificador único al crear la pieza y consérvalo al editarla."
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Tipo de pieza", name: "tipo", widget: "select", options: ["Entrevista", "Reportaje", "Rueda de prensa", "Vídeo"], default: "Entrevista" }
+              - { label: "Fecha", name: "fecha", widget: "datetime", date_format: "DD/MM/YYYY", time_format: false, format: "DD/MM/YYYY" }
+              - label: "Enlace al vídeo de YouTube"
+                name: "url"
+                widget: "string"
+                pattern: ['^https://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:[^#\s]*&)?v=|shorts/|live/|embed/)|youtu\.be/)[A-Za-z0-9_-]{11}(?:[?&#/][^\s]*)?$', "Pega el enlace de YouTube, Shorts o youtu.be de un vídeo concreto."]
+              - label: "Formato del reproductor"
+                name: "formato"
+                widget: "select"
+                default: "horizontal"
+                options:
+                  - { label: "Horizontal (16:9)", value: "horizontal" }
+                  - { label: "Vertical (9:16)", value: "vertical" }
+              - { label: "Miniatura", name: "imagen", widget: "image" }
+              - { label: "Encuadre de la miniatura (16:9)", name: "imagen_pos", widget: "focal-point", required: false, default: "center center" }
+              - { label: "Persona entrevistada", name: "persona", widget: "string", required: false }
+              - { label: "Descripción", name: "descripcion", widget: "text", required: false }
+              - { label: "Transcripción", name: "transcripcion", widget: "text", required: false }
+              - label: "Artículo relacionado"
+                name: "articulo"
+                widget: "relation"
+                required: false
+                collection: "articulos"
+                file: "articulos"
+                search_fields: ["articulos.*.titulo"]
+                display_fields: ["articulos.*.titulo"]
+                value_field: "articulos.*.id"

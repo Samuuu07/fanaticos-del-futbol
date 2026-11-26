@@ -17,142 +17,154 @@
   <script data-goatcounter="https://fanaticosdelfutbol.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 
-<body>
+<body data-articles-limit="3" data-programs-limit="7">
 
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="./" aria-label="Fanáticos del Fútbol — Inicio">
-        <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+        <img src="img/logofanaticossinfondo.png" srcset="img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
         <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" id="menu-principal" aria-label="Navegación principal">
         <a href="./" aria-current="page">Inicio</a>
         <a href="articulos.html">Artículos</a>
         <a href="programas.html">Programas</a>
+        <a href="videos.html">Vídeos y entrevistas</a>
+        <a href="#quienes-somos">Quiénes somos</a>
         <div class="header-social">
-          <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+          <a href="https://www.instagram.com/fanaticosdelfutbolll?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
               data-icon="instagram"></span></a>
-          <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
-          <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+          <a href="https://x.com/FannaticosF" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+          <a href="https://www.tiktok.com/@fanaticosdelfutbolll?_t=8rCnwKtU8vp&amp;_r=1" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
               data-icon="tiktok"></span></a>
         </div>
       </nav>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+      <button type="button" aria-controls="menu-principal" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-split" aria-hidden="true"></div>
-    <div class="wrap">
-      <span class="hero-tag">Periodismo deportivo · Burgos CF</span>
-      <h1>Fanáticos <em>del</em> fútbol,<br>sin filtros.</h1>
-      <p class="hero-sub">Mezclamos periodismo tradicional y moderno para contar la actualidad del Burgos CF como se
-        siente:
-        Con datos, con opinión, con análisis, y sobre todo, con pasión blanquinegra.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="articulos.html">Leer artículos</a>
-        <a class="btn btn-ghost-light" href="programas.html">Escuchar programas</a>
+  <main id="contenido">
+    <section class="hero">
+      <picture class="hero-photo">
+        <source type="image/webp" srcset="img/el-plantio-portada.webp">
+        <img src="img/fotoplantio.jpg" alt="Grada y césped del estadio El Plantío" width="2000" height="623" fetchpriority="high">
+      </picture>
+      <div class="wrap hero-cover">
+        <span class="hero-tag">Periodismo deportivo · Burgos CF</span>
+        <h1>Fanáticos del fútbol,<br><em>sin filtros.</em></h1>
+        <p class="hero-sub">Mezclamos periodismo tradicional y moderno para contar la actualidad del Burgos CF como se
+          siente:
+          Con datos, con opinión, con análisis, y sobre todo, con pasión blanquinegra.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="articulos.html"><span data-icon="news" aria-hidden="true"></span>Leer artículos</a>
+          <a class="btn btn-ghost-light" href="programas.html"><span data-icon="headphones" aria-hidden="true"></span>Escuchar programas</a>
+        </div>
+        <span class="photo-caption"><span data-icon="pin" aria-hidden="true"></span>Estadio El Plantío · Burgos</span>
       </div>
-    </div>
-    <div class="ticker">
-      <div class="wrap" data-ticker></div>
-    </div>
-  </section>
-  <section class="section section-feed">
-    <div class="wrap">
-      <div class="feed-layout">
-        <div class="feed-main">
-          <div class="section-head reveal">
-            <div>
-              <span class="eyebrow">Portada</span>
-              <h2>Últimas noticias</h2>
+      <div class="ticker">
+        <div class="wrap" data-ticker></div>
+      </div>
+    </section>
+    <section class="section section-feed">
+      <div class="wrap">
+        <div class="feed-layout">
+          <div class="feed-main">
+            <div class="section-head reveal">
+              <div>
+                <span class="eyebrow">Portada</span>
+                <h2>Últimas noticias</h2>
+              </div>
+              <a class="section-link" aria-label="Ver todos los artículos" href="articulos.html">Ver todos</a>
             </div>
-            <a class="section-link" href="articulos.html">Ver todos</a>
+            <div class="grid grid-bento" data-articles-grid></div>
           </div>
-          <div class="grid grid-bento" data-articles-grid></div>
-        </div>
 
-        <aside class="feed-side">
-          <div class="section-head section-head-compact reveal">
-            <div>
-              <span class="eyebrow">En directo</span>
-              <h2>Últimos programas</h2>
+          <aside class="feed-side">
+            <div class="section-head section-head-compact reveal">
+              <div>
+                <span class="eyebrow">En directo</span>
+                <h2>Últimos programas</h2>
+              </div>
+              <a class="section-link" aria-label="Ver todos los programas" href="programas.html">Ver todos</a>
             </div>
-            <a class="section-link" href="programas.html">Ver todos</a>
+            <div class="programs-list programs-side" data-programs-list></div>
+
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- videos:inicio -->
+    <!-- videos:fin -->
+
+    <section class="section section-alt" id="quienes-somos">
+      <div class="wrap">
+        <h2 class="about-heading reveal">Quiénes somos</h2>
+
+        <div class="about-block reveal">
+          <div class="about-media">
+            <img src="img/fotomanuelpersonal.jpg" alt="Manuel Cavia" loading="lazy">
           </div>
-          <div class="programs-list programs-side" data-programs-list></div>
-
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="quienes-somos">
-    <div class="wrap">
-      <span class="eyebrow reveal">Quiénes somos</span>
-
-      <div class="about-block reveal">
-        <div class="about-media">
-          <img src="img/fotomanuelpersonal.jpg" alt="Foto manuel personal">
+          <div class="about-text">
+            <span class="about-num">01 — Quiénes somos</span>
+            <h3>Una cuenta hecha por y para aficionados</h3>
+            <p>Somos una cuenta dedicada al fútbol español donde mezclamos el periodismo tradicional con el periodismo más
+              moderno.</p>
+            <p>El integrante principal y creador de Fanáticos es <strong>Manuel Cavia</strong>, un joven muy fanático del
+              Burgos CF, con un sueño por cumplir: Ser periodista deportivo.</p>
+          </div>
         </div>
-        <div class="about-text">
-          <span class="about-num">01 — Quiénes somos</span>
-          <h3>Una cuenta hecha por y para aficionados</h3>
-          <p>Somos una cuenta dedicada al fútbol español donde mezclamos el periodismo tradicional con el periodismo más
-            moderno.</p>
-          <p>El integrante principal y creador de Fanáticos es <strong>Manuel Cavia</strong>, un joven muy fanático del
-            Burgos CF, con un sueño por cumplir: Ser periodista deportivo.</p>
-        </div>
-      </div>
 
-      <div class="about-block reverse reveal">
-        <div class="about-media">
-          <img src="img/whatsapp-image-2026-09-02-at-13.37.21-1-.jpeg" alt="Foto manuel radio">
+        <div class="about-block reverse reveal">
+          <div class="about-media">
+            <img src="img/whatsapp-image-2026-09-02-at-13.37.21-1-.jpeg" alt="Manuel Cavia en el estudio de Vive! Radio" loading="lazy">
+          </div>
+          <div class="about-text">
+            <span class="about-num">02 — A qué nos dedicamos</span>
+            <h3>Artículos, entrevistas y radio</h3>
+            <p>Realizamos todo tipo de cosas en relación con el fútbol y el periodismo: artículos, entrevistas, eventos,
+              podcast, opiniones, crónicas...</p>
+            <p>Además, hablamos todos los <strong>martes de 23:00 a 00:00 en Vive Radio Burgos 100.0 FM</strong>, en
+              nuestro propio programa <strong>Fanáticos del BCF</strong>.</p>
+          </div>
         </div>
-        <div class="about-text">
-          <span class="about-num">02 — A qué nos dedicamos</span>
-          <h3>Artículos, entrevistas y radio</h3>
-          <p>Realizamos todo tipo de cosas en relación con el fútbol y el periodismo: artículos, entrevistas, eventos,
-            podcast, opiniones, crónicas...</p>
-          <p>Además, hablamos todos los <strong>martes de 23:00 a 00:00 en Vive Radio Burgos 100.0 FM</strong>, en
-            nuestro propio programa <strong>Fanáticos del BCF</strong>.</p>
-        </div>
-      </div>
 
-      <div class="about-block reveal">
-        <div class="about-media">
-          <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos">
-        </div>
-        <div class="about-text">
-          <span class="about-num">03 — Cómo surgió</span>
-          <h3>El inicio de un sueño</h3>
-          <p>Nuestro futuro es el motivo principal de la creación de Fanáticos.</p>
-          <p>El objetivo que nos marcamos con el
-            inicio de este proyecto fue el de introducirnos y coger experiencia en el mundo del periodismo deportivo,
-            como así hemos podido vivir con experiencias únicas en televisión, radio, acreditaciones y entrevistas. Es
-            decir, <strong>Fanáticos es el
-              inicio de un sueño.</strong></p>
+        <div class="about-block reveal">
+          <div class="about-media">
+            <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos">
+          </div>
+          <div class="about-text">
+            <span class="about-num">03 — Cómo surgió</span>
+            <h3>El inicio de un sueño</h3>
+            <p>Nuestro futuro es el motivo principal de la creación de Fanáticos.</p>
+            <p>El objetivo que nos marcamos con el
+              inicio de este proyecto fue el de introducirnos y coger experiencia en el mundo del periodismo deportivo,
+              como así hemos podido vivir con experiencias únicas en televisión, radio, acreditaciones y entrevistas. Es
+              decir, <strong>Fanáticos es el
+                inicio de un sueño.</strong></p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-top">
         <div class="footer-col">
           <div class="footer-brand">
-            <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+            <img src="img/logofanaticossinfondo.png" srcset="img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
             <span class="brand-name">Fanáticos del Fútbol</span>
           </div>
           <p>Periodismo deportivo sobre el Burgos CF. Artículos, opinión y radio, hechos por un
             aficionado para aficionados.</p>
           <div class="footer-social">
-            <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+            <a href="https://www.instagram.com/fanaticosdelfutbolll?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
                 data-icon="instagram"></span></a>
-            <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
-            <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+            <a href="https://x.com/FannaticosF" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+            <a href="https://www.tiktok.com/@fanaticosdelfutbolll?_t=8rCnwKtU8vp&amp;_r=1" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
                 data-icon="tiktok"></span></a>
           </div>
         </div>
@@ -162,6 +174,7 @@
             <li><a href="./">Inicio</a></li>
             <li><a href="articulos.html">Artículos</a></li>
             <li><a href="programas.html">Programas</a></li>
+            <li><a href="videos.html">Vídeos y entrevistas</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -181,16 +194,8 @@
     </div>
   </footer>
 
-  <!-- Sin <style> inline del footer: ahora vive unificado en styles.css -->
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    document.body.dataset.articlesLimit = "3";
-    document.body.dataset.programsLimit = "7";
-    document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
-    document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
-    document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
-  </script>
 </body>
 
 </html>

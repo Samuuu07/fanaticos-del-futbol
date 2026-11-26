@@ -50,6 +50,26 @@ function markdownATextoPlano(texto) {
     .trim();
 }
 
+// Encuadres de las fotografías anteriores al selector de punto focal del CMS.
+// Una posición elegida en el editor tiene prioridad sobre el encuadre histórico.
+const encuadresOriginales = {
+  duraderrotaenelplantio: "center top",
+  lasituaciondealexsancris: "center top",
+  lameritocraciaenelmadrid: "center 25%",
+  jesusaresounfutbolista: "center 4%",
+  notasdelburgoscf: "center top",
+  lahoradedaniceballos: "center 2%",
+  opinionmbappe: "center 5%",
+  problemasdelburgos: "center 5%",
+  laligavspremier: "center 5%",
+  juancruz: "center 5%"
+};
+
+function encuadreArticulo(articulo) {
+  const nombre = String(articulo.imagen || "").split("/").pop().split(".")[0].toLowerCase();
+  return articulo.imagen_pos || encuadresOriginales[nombre] || "center center";
+}
+
 async function cargarArticulos() {
   try {
     const res = await fetch("data/articulos.json", { cache: "no-store" });
@@ -77,7 +97,8 @@ async function cargarArticulos() {
         titulo: a.titulo,
         fecha: a.fecha,
         imagen: a.imagen,
-        imagen_pos: a.imagen_pos || "center center",
+        imagen_pos: encuadreArticulo(a),
+        imagen_pos_destacada: a.imagen_pos_destacada,
         resumen,
         categoria: a.categoria,
         autor: a.autor || "Manuel Cavia",
@@ -101,7 +122,7 @@ async function cargarProgramas() {
     window.PROGRAMAS = (data.programas || []).map(p => ({
       titulo: p.titulo,
       fecha: p.fecha,
-      imagen: p.imagen || "img/viveradio.jpg",
+      imagen: p.imagen || "img/whatsapp-image-2026-09-30-at-22.09.15.jpeg",
       imagen_pos: p.imagen_pos || "center 20%",
       link: p.link
     }));
@@ -114,6 +135,9 @@ async function cargarProgramas() {
   }
 }
 
-Promise.allSettled([cargarArticulos(), cargarProgramas()]).then(() => {
-  document.dispatchEvent(new Event("datosListos"));
+document.addEventListener("DOMContentLoaded", () => {
+  const requests = [];
+  if (document.querySelector("[data-articles-grid]")) requests.push(cargarArticulos());
+  if (document.querySelector("[data-programs-list]")) requests.push(cargarProgramas());
+  Promise.allSettled(requests).then(() => document.dispatchEvent(new Event("datosListos")));
 });

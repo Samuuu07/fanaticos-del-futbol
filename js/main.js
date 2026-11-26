@@ -15,7 +15,10 @@ function escapeHtml(value) {
 
 /* ---------- Iconos SVG reutilizables ---------- */
 const ICONS = {
-  arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+  news: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h4v4H7zM14 9h3m-3 4h3M7 16h10"/></svg>`,
+  headphones: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="12" width="4.5" height="8" rx="2"/><rect x="16.5" y="12" width="4.5" height="8" rx="2"/></svg>`,
+  search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/></svg>`,
   play: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`,
   menu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>`,
   close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
@@ -30,18 +33,31 @@ function initNav() {
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".main-nav");
   if (!toggle || !nav) return;
-  toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("open");
-    document.body.classList.toggle("nav-open", isOpen);
+  const setOpen = (isOpen) => {
+    nav.classList.toggle("open", isOpen);
     toggle.innerHTML = isOpen ? ICONS.close : ICONS.menu;
     toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+  };
+  const header = toggle.closest("header");
+  header.classList.add("interactive");
+  toggle.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) setOpen(false);
   });
-  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-    nav.classList.remove("open");
-    document.body.classList.remove("nav-open");
-    toggle.innerHTML = ICONS.menu;
-    toggle.setAttribute("aria-expanded", "false");
-  }));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && nav.classList.contains("open")) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (nav.classList.contains("open") && !header.contains(event.target)) setOpen(false);
+  });
+  header.addEventListener("focusout", (event) => {
+    if (event.relatedTarget && !header.contains(event.relatedTarget)) setOpen(false);
+  });
+  window.matchMedia("(max-width: 55rem)").addEventListener("change", () => setOpen(false));
 }
 
 /* ---------- Revelado al hacer scroll ---------- */
@@ -100,31 +116,35 @@ function renderTicker() {
 }
 
 /* ---------- Tarjeta de artículo ---------- */
-function articleCardHTML(a, index) {
-  const pos = escapeHtml(a.imagen_pos || "center center");
+function articleCardHTML(a) {
+  const position = value => CSS.supports("object-position", value) ? escapeHtml(value) : "center center";
+  const regular = position(a.imagen_pos);
+  const featured = a.imagen_pos_destacada ? position(a.imagen_pos_destacada) : regular;
   return `
-    <a class="card reveal" href="articulos/${escapeHtml(a.id)}.html" style="transition-delay:${(index % 3) * 80}ms">
+    <a class="card reveal" href="articulos/${escapeHtml(a.id)}.html">
       <div class="card-media">
-        <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy" style="object-position:${pos}">
+        <img src="${escapeHtml(a.imagen)}" alt="${escapeHtml(a.titulo)}" loading="lazy" style="--card-focus:${regular}; --featured-focus:${featured}">
         <span class="card-tag">${escapeHtml(a.categoria)}</span>
       </div>
       <div class="card-body">
+        <span class="card-date">${escapeHtml(a.fecha)}</span>
         <h3>${escapeHtml(a.titulo)}</h3>
         <p class="card-excerpt">${escapeHtml(a.resumen)}</p>
-        <span class="card-more">Leer artículo ${ICONS.arrow}</span>
+        <span class="card-more">Leer artículo</span>
       </div>
     </a>
   `;
 }
 
 /* ---------- Fila de programa ---------- */
-function programRowHTML(p, index) {
+function programRowHTML(p) {
+  const platform = /^https:\/\/open\.spotify\.com\//i.test(p.link) ? " en Spotify" : "";
   return `
-    <div class="program-row reveal" style="transition-delay:${(index % 6) * 60}ms">
+    <div class="program-row reveal">
     <div class="program-thumb"><img src="${escapeHtml(p.imagen)}" alt="${escapeHtml(p.titulo)}" loading="lazy" style="object-position:${escapeHtml(p.imagen_pos || 'center 20%')}"></div>
     <div class="program-date">${escapeHtml(p.fecha)}</div>
-    <div class="program-title">${escapeHtml(p.titulo)}</div>
-    <a class="program-listen" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="Se abre en una pestaña nueva, en una web externa">Escuchar ${ICONS.play}<span class="external-hint" aria-hidden="true">${ICONS.external}</span><span class="sr-only"> (enlace externo, se abre en una pestaña nueva)</span></a>
+    <h3 class="program-title">${escapeHtml(p.titulo)}</h3>
+    <a class="program-listen" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="Escuchar${platform} (se abre en una pestaña nueva)">${ICONS.play}<span>Escuchar<span class="platform">${platform}</span></span><span class="sr-only"> ${escapeHtml(p.titulo)} (enlace externo, se abre en una pestaña nueva)</span></a>
     </div>
   `;
 }
@@ -154,6 +174,50 @@ function renderProgramsList(selector, limit) {
   el.innerHTML = items.length ? items.map(programRowHTML).join("") : `<p class="empty-state">Todavía no hay programas publicados.</p>`;
 }
 
+function initArticleFilters() {
+  const toolbar = document.querySelector("[data-archive-tools]");
+  const articles = window.ARTICULOS || [];
+  if (!toolbar || !articles.length) return;
+
+  const search = toolbar.querySelector("[data-search]");
+  const categories = toolbar.querySelector("[data-categories]");
+  const status = document.querySelector("[data-results]");
+  const cards = document.querySelectorAll("#archivo .card");
+  const normalize = (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const searchable = articles.map(a => normalize([a.titulo, a.autor, a.categoria, ...a.parrafos].join(" ")));
+  let active = "";
+
+  function update() {
+    const term = normalize(search.value.trim());
+    let count = 0;
+    articles.forEach((article, i) => {
+      const visible = (!active || article.categoria === active) && searchable[i].includes(term);
+      cards[i].hidden = !visible;
+      if (visible) count++;
+    });
+    status.textContent = count ? `${count} ${count === 1 ? "artículo" : "artículos"}`
+      : "Ningún artículo coincide. Prueba con otra búsqueda o categoría.";
+  }
+
+  const values = [...new Set(articles.map(a => a.categoria).filter(Boolean))];
+  for (const category of ["", ...values.sort((a, b) => a.localeCompare(b, "es"))]) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = category || "Todas";
+    button.setAttribute("aria-pressed", String(category === active));
+    button.setAttribute("aria-controls", "archivo");
+    button.addEventListener("click", () => {
+      active = category;
+      for (const item of categories.children) item.setAttribute("aria-pressed", String(item === button));
+      update();
+    });
+    categories.append(button);
+  }
+  search.addEventListener("input", update);
+  toolbar.hidden = false;
+  update();
+}
+
 /* ---------- Inyectar iconos estáticos (header/footer social) ---------- */
 function injectStaticIcons() {
   document.querySelectorAll("[data-icon]").forEach(el => {
@@ -167,6 +231,9 @@ function injectStaticIcons() {
 /* ---------- Init general ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   injectStaticIcons();
+  document.querySelectorAll("[data-social]").forEach(link => {
+    if (typeof REDES !== "undefined" && REDES[link.dataset.social]) link.href = REDES[link.dataset.social];
+  });
   initNav();
   initFooterYear();
 });
@@ -175,5 +242,6 @@ document.addEventListener("datosListos", () => {
   renderTicker();
   renderArticlesGrid("[data-articles-grid]", document.body.dataset.articlesLimit ? Number(document.body.dataset.articlesLimit) : null);
   renderProgramsList("[data-programs-list]", document.body.dataset.programsLimit ? Number(document.body.dataset.programsLimit) : null);
+  initArticleFilters();
   initReveal();
 });

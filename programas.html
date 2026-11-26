@@ -19,59 +19,65 @@
 
 <body>
 
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="./" aria-label="Fanáticos del Fútbol — Inicio">
-        <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+        <img src="img/logofanaticossinfondo.png" srcset="img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
         <span class="brand-name">Fanáticos del fútbol<span>.</span></span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" id="menu-principal" aria-label="Navegación principal">
         <a href="./">Inicio</a>
         <a href="articulos.html">Artículos</a>
         <a href="programas.html" aria-current="page">Programas</a>
+        <a href="videos.html">Vídeos y entrevistas</a>
+        <a href="index.html#quienes-somos">Quiénes somos</a>
         <div class="header-social">
-          <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+          <a href="https://www.instagram.com/fanaticosdelfutbolll?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
               data-icon="instagram"></span></a>
-          <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
-          <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+          <a href="https://x.com/FannaticosF" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+          <a href="https://www.tiktok.com/@fanaticosdelfutbolll?_t=8rCnwKtU8vp&amp;_r=1" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
               data-icon="tiktok"></span></a>
         </div>
       </nav>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
+      <button type="button" aria-controls="menu-principal" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"></button>
     </div>
   </header>
 
-  <section class="page-hero">
-    <div class="wrap">
-      <span class="eyebrow">Programas</span>
-      <h1 style="margin-top:0.75rem;">Cada martes, en Vive! Radio</h1>
-      <p>Nuestra sección de entrevistas y preguntas semanales sobre el Burgos CF. Dale a "Escuchar" para abrir el
-        episodio en Vive! Radio.</p>
-    </div>
-  </section>
+  <main id="contenido">
+    <section class="page-hero radio-hero">
+      <div class="wrap">
+        <span class="eyebrow">Programas</span>
+        <h1>Cada martes, en Vive! Radio</h1>
+        <p>Nuestra sección de entrevistas y preguntas semanales sobre el Burgos CF. Dale a "Escuchar" para abrir el
+          episodio de Vive! Radio en su plataforma de escucha.</p>
+      </div>
+    </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="programs-list" data-programs-list></div>
-    </div>
-  </section>
+    <section class="section">
+      <div class="wrap">
+        <h2 class="archive-heading">Todos los programas</h2>
+        <div class="programs-list" data-programs-list></div>
+      </div>
+    </section>
+  </main>
 
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-top">
         <div class="footer-col">
           <div class="footer-brand">
-            <img src="img/logofanaticossinfondo.png" alt="Logo Fanáticos del Fútbol">
+            <img src="img/logofanaticossinfondo.png" srcset="img/fanaticos-marca.webp 1x" width="52" height="52" alt="Logo Fanáticos del Fútbol">
             <span class="brand-name">Fanáticos del Fútbol</span>
           </div>
           <p>Periodismo deportivo sobre el Burgos CF. Artículos, opinión y radio, hechos por un
             aficionado para aficionados.</p>
           <div class="footer-social">
-            <a href="#" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
+            <a href="https://www.instagram.com/fanaticosdelfutbolll?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram"><span
                 data-icon="instagram"></span></a>
-            <a href="#" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
-            <a href="#" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
+            <a href="https://x.com/FannaticosF" data-social="x" target="_blank" rel="noopener" aria-label="X"><span data-icon="x"></span></a>
+            <a href="https://www.tiktok.com/@fanaticosdelfutbolll?_t=8rCnwKtU8vp&amp;_r=1" data-social="tiktok" target="_blank" rel="noopener" aria-label="TikTok"><span
                 data-icon="tiktok"></span></a>
           </div>
         </div>
@@ -81,6 +87,7 @@
             <li><a href="./">Inicio</a></li>
             <li><a href="articulos.html">Artículos</a></li>
             <li><a href="programas.html">Programas</a></li>
+            <li><a href="videos.html">Vídeos y entrevistas</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -102,11 +109,6 @@
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    document.querySelectorAll('[data-social="instagram"]').forEach(a => a.href = REDES.instagram);
-    document.querySelectorAll('[data-social="x"]').forEach(a => a.href = REDES.x);
-    document.querySelectorAll('[data-social="tiktok"]').forEach(a => a.href = REDES.tiktok);
-  </script>
 </body>
 
 </html>

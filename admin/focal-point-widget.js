@@ -1,329 +1,86 @@
-/**
- * Fanáticos del Fútbol — Widget "Encuadre para tarjeta"
- * ------------------------------------------------------------
- * Guarda un string CSS object-position, p.ej. "45% 30%".
- * Compatible con colecciones tipo lista (un solo articulos.json).
- * Busca la imagen del campo hermano "imagen" subiendo por el DOM
- * del ítem de la lista (entry.getIn no llega al ítem anidado).
- */
+/* Cada control guarda su propio object-position. La imagen sigue siendo un único campo de Decap. */
 (function () {
-  if (typeof CMS === "undefined" || typeof createClass === "undefined") {
-    console.error("[focal-point] CMS no está cargado. Incluye este script después de decap-cms.js");
-    return;
+  const h = window.h || window.React?.createElement;
+  if (!window.CMS || !window.createClass || !h) return;
+
+  function percent(token) {
+    if (token === "top" || token === "left") return 0;
+    if (token === "bottom" || token === "right") return 100;
+    return token?.endsWith("%") ? Math.min(100, Math.max(0, parseFloat(token))) : 50;
   }
 
-  var h = window.h || (window.React && window.React.createElement);
-  if (!h) {
-    console.error("[focal-point] React.createElement / h no disponible");
-    return;
-  }
-
-  var CARD_W = 320;
-  var CARD_H = 180;
-
-  var FocalPointControl = createClass({
-    getInitialState: function () {
-      return { imgSrc: null };
+  const Control = createClass({
+    getInitialState() {
+      return { image: "", inherited: "center center" };
     },
 
-    componentDidMount: function () {
-      this._alive = true;
-      this.syncImageFromSibling();
-      // La preview de Decap a veces tarda en pintar el <img>
-      this._timer = setInterval(this.syncImageFromSibling, 600);
+    componentDidMount() {
+      // Decap da un ID único a cada campo, incluso con varios elementos de la lista abiertos.
+      // El ancestro común más cercano reúne la imagen y los controles de este elemento.
+      let scope = document.getElementById(this.props.forID)?.parentElement;
+      while (scope && !scope.querySelector('label[for^="imagen-field-"]')) scope = scope.parentElement;
+      if (!scope || scope.querySelectorAll('label[for^="imagen-field-"]').length !== 1) return;
+      this.scope = scope;
+      this.syncImage();
+      this.observer = new MutationObserver(this.syncImage);
+      this.observer.observe(scope, { childList: true, subtree: true, attributes: true, attributeFilter: ["src", "data-position"] });
     },
 
-    componentWillUnmount: function () {
-      this._alive = false;
-      if (this._timer) clearInterval(this._timer);
+    componentWillUnmount() {
+      this.observer?.disconnect();
     },
 
-    componentDidUpdate: function () {
-      this.syncImageFromSibling();
+    syncImage() {
+      const label = this.scope.querySelector('label[for^="imagen-field-"]');
+      const control = label?.closest("[aria-label]");
+      const image = control?.querySelector("img")?.src || "";
+      const regular = this.scope.querySelector('[data-focal-field="imagen_pos"]');
+      const inherited = regular?.dataset.position || "center center";
+      if (image !== this.state.image || inherited !== this.state.inherited) this.setState({ image, inherited });
     },
 
-    /**
-     * Busca en el mismo ítem de la lista un <img> del widget Image.
-     * Ignora el marcador de este propio widget.
-     */
-    syncImageFromSibling: function () {
-      if (!this._alive) return;
-      var forID = this.props.forID;
-      var root = forID ? document.getElementById(forID) : null;
-      if (!root) return;
-
-      var found = null;
-      var node = root.parentElement;
-      // Subir por el árbol hasta encontrar un contenedor con otra imagen
-      for (var depth = 0; depth < 12 && node; depth++) {
-        var imgs = node.querySelectorAll("img");
-        for (var i = 0; i < imgs.length; i++) {
-          var img = imgs[i];
-          // Saltar imágenes dentro de este mismo control
-          if (root.contains(img)) continue;
-          var src = img.getAttribute("src") || "";
-          // Decap usa blob: para previews recién subidas — también vale
-          if (!src) continue;
-          // Evitar iconos UI minúsculos
-          if (img.naturalWidth > 0 && img.naturalWidth < 24) continue;
-          if (img.width > 0 && img.width < 24 && img.naturalWidth === 0) continue;
-          found = src;
-          break;
-        }
-        if (found) break;
-        node = node.parentElement;
-      }
-
-      // Fallback: entry plano (por si alguna vez no es lista)
-      if (!found) {
-        try {
-          var entry = this.props.entry;
-          if (entry && entry.getIn) {
-            var path = entry.getIn(["data", "imagen"]);
-            if (path) {
-              found = String(path);
-              if (found.indexOf("http") !== 0 && found.charAt(0) !== "/" && found.indexOf("blob:") !== 0) {
-                found = "/" + found.replace(/^\.\//, "");
-              }
-            }
-          }
-        } catch (e) { }
-      }
-
-      if (found && found !== this.state.imgSrc) {
-        this.setState({ imgSrc: found });
-      }
+    setPoint(x, y) {
+      const clamp = n => Math.round(Math.max(0, Math.min(100, n)));
+      this.props.onChange(`${clamp(x)}% ${clamp(y)}%`);
     },
 
-    parsePos: function (value) {
-      var v = (value || "center center").trim();
-      var parts = v.split(/\s+/);
-      if (parts.length < 2) return { x: 50, y: 50 };
-
-      function toPct(token) {
-        if (token === "center" || token === "centre") return 50;
-        if (token === "left" || token === "top") return 0;
-        if (token === "right" || token === "bottom") return 100;
-        var m = String(token).match(/^([\d.]+)%$/);
-        if (m) return Math.max(0, Math.min(100, parseFloat(m[1])));
-        return 50;
-      }
-      return { x: toPct(parts[0]), y: toPct(parts[1]) };
-    },
-
-    formatPos: function (x, y) {
-      return Math.round(x) + "% " + Math.round(y) + "%";
-    },
-
-    handleClick: function (e) {
-      var rect = e.currentTarget.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width) * 100;
-      var y = ((e.clientY - rect.top) / rect.height) * 100;
-      x = Math.max(0, Math.min(100, x));
-      y = Math.max(0, Math.min(100, y));
-      this.props.onChange(this.formatPos(x, y));
-    },
-
-    render: function () {
-      var value = this.props.value || "center center";
-      var pos = this.parsePos(value);
-      var imgSrc = this.state.imgSrc;
-      var forID = this.props.forID;
-      var classNameWrapper = this.props.classNameWrapper;
-
-      return h(
-        "div",
-        { className: classNameWrapper, id: forID, style: { maxWidth: 640 } },
-        h(
-          "p",
-          {
-            style: {
-              margin: "0 0 10px",
-              fontSize: 13,
-              color: "#666",
-              lineHeight: 1.4,
-            },
-          },
-          "Haz clic en el punto importante de la foto (cara, balón, acción…). ",
-          "A la derecha verás cómo quedará en la tarjeta de la portada."
-        ),
-
-        !imgSrc &&
-        h(
-          "p",
-          {
-            style: {
-              padding: 16,
-              background: "#f5f5f5",
-              border: "1px dashed #ccc",
-              borderRadius: 6,
-              color: "#888",
-              fontSize: 13,
-            },
-          },
-          "Sube primero la imagen del artículo (campo «Imagen») para poder encuadrarla. Si ya la subiste, espera un segundo o guarda y vuelve a abrir el ítem."
-        ),
-
-        imgSrc &&
-        h(
-          "div",
-          {
-            style: {
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 20,
-              alignItems: "flex-start",
-            },
-          },
-          h(
-            "div",
-            { style: { flex: "1 1 280px", maxWidth: 420 } },
-            h(
-              "div",
-              {
-                onClick: this.handleClick,
-                title: "Clic para elegir el punto de interés",
-                style: {
-                  position: "relative",
-                  cursor: "crosshair",
-                  border: "1px solid #ddd",
-                  borderRadius: 6,
-                  overflow: "hidden",
-                  background: "#111",
-                  userSelect: "none",
-                },
-              },
-              h("img", {
-                src: imgSrc,
-                alt: "Imagen del artículo",
-                draggable: false,
-                style: {
-                  display: "block",
-                  width: "100%",
-                  height: "auto",
-                  pointerEvents: "none",
-                },
-              }),
-              h("div", {
-                style: {
-                  position: "absolute",
-                  left: pos.x + "%",
-                  top: pos.y + "%",
-                  width: 18,
-                  height: 18,
-                  marginLeft: -9,
-                  marginTop: -9,
-                  borderRadius: "50%",
-                  border: "2px solid #fff",
-                  background: "rgba(227, 6, 19, 0.85)",
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.35)",
-                  pointerEvents: "none",
-                },
-              })
+    render() {
+      const { field, forID, value, classNameWrapper } = this.props;
+      const name = field.get("name");
+      const featured = name === "imagen_pos_destacada";
+      const position = value || (featured ? this.state.inherited : "center center");
+      const [x, y] = position.split(/\s+/).map(percent);
+      const ratio = field.get("preview_ratio") || "16 / 9";
+      const image = this.state.image;
+      return h("div", { id: forID, className: classNameWrapper, "data-focal-field": name, "data-position": position },
+        image ? h("div", { className: "crop-editor" },
+          h("div", null,
+            h("p", null, "Elige el punto de interés"),
+            h("div", { className: "crop-source", onClick: event => {
+              const r = event.currentTarget.getBoundingClientRect();
+              this.setPoint((event.clientX - r.left) * 100 / r.width, (event.clientY - r.top) * 100 / r.height);
+            } },
+              h("img", { src: image, alt: "Imagen completa", draggable: false }),
+              h("span", { className: "crop-marker", style: { left: x + "%", top: y + "%" } })
             ),
-            h(
-              "p",
-              {
-                style: {
-                  margin: "8px 0 0",
-                  fontSize: 12,
-                  fontFamily: "monospace",
-                  color: "#444",
-                },
-              },
-              "Encuadre: ",
-              h("strong", null, value)
-            )
+            ...["Horizontal", "Vertical"].map((label, i) => h("label", { key: label, className: "crop-axis" },
+              label, h("input", { type: "range", min: 0, max: 100, value: i ? y : x,
+                onChange: e => i ? this.setPoint(x, e.target.value) : this.setPoint(e.target.value, y) })
+            ))
           ),
-
-          h(
-            "div",
-            { style: { flex: "0 0 auto" } },
-            h(
-              "div",
-              {
-                style: {
-                  fontSize: 11,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  color: "#888",
-                  marginBottom: 6,
-                },
-              },
-              "Vista previa de la tarjeta"
-            ),
-            h(
-              "div",
-              {
-                style: {
-                  width: CARD_W,
-                  border: "1px solid #e0e0e0",
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  background: "#fff",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-                },
-              },
-              h(
-                "div",
-                {
-                  style: {
-                    width: "100%",
-                    height: CARD_H,
-                    overflow: "hidden",
-                    background: "#0d0d0d",
-                  },
-                },
-                h("img", {
-                  src: imgSrc,
-                  alt: "",
-                  style: {
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: value,
-                    display: "block",
-                  },
-                })
-              ),
-              h(
-                "div",
-                { style: { padding: "10px 12px" } },
-                h("div", {
-                  style: {
-                    height: 10,
-                    width: "70%",
-                    background: "#eee",
-                    borderRadius: 2,
-                    marginBottom: 6,
-                  },
-                }),
-                h("div", {
-                  style: {
-                    height: 8,
-                    width: "90%",
-                    background: "#f3f3f3",
-                    borderRadius: 2,
-                  },
-                })
-              )
+          h("div", null,
+            h("p", null, "Vista previa · " + ratio.replace(" / ", ":")),
+            h("img", { className: "crop-preview", src: image, alt: "Recorte de la miniatura",
+              style: { aspectRatio: ratio, objectPosition: position } }),
+            featured && h("label", { className: "crop-inherit" },
+              h("input", { type: "checkbox", checked: !value,
+                onChange: e => this.props.onChange(e.target.checked ? "" : this.state.inherited) }),
+              " Usar el punto de las tarjetas"
             )
           )
-        )
+        ) : h("p", null, "Selecciona una imagen para ver y ajustar este recorte.")
       );
-    },
+    }
   });
-
-  var FocalPointPreview = createClass({
-    render: function () {
-      return h(
-        "span",
-        { style: { fontFamily: "monospace", fontSize: 12 } },
-        this.props.value || "center center"
-      );
-    },
-  });
-
-  CMS.registerWidget("focal-point", FocalPointControl, FocalPointPreview);
-  console.info('[focal-point] Widget "focal-point" registrado (v2 lista-aware)');
+  CMS.registerWidget("focal-point", Control, ({ value }) => h("span", null, value || "Predeterminado"));
 })();
