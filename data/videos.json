@@ -2,11 +2,11 @@
   "videos": [
     {
       "transcripcion": "tttt",
-      "imagen_pos": "61% 47%",
+      "imagen_pos": "27% 88%",
       "persona": "t",
       "descripcion": "tttt",
       "url": "https://www.youtube.com/watch?v=ebWmGWcvR8E",
-      "imagen": "https://i.ytimg.com/vi/ebWmGWcvR8E/hq720.jpg?sqp=-oaymwErCNAFEJQDSFryq4qpAx0IARUAAIhCGAHYAQHiAQoIGBACGAY4AUABuAL3GA==&rs=AOn4CLAPzHfM-JKYyCPA6mLZL3OLnKSVXQ",
+      "imagen": "img/dsc02457.jpg.jpeg",
       "tipo": "Vídeo",
       "formato": "horizontal",
       "titulo": "ESTO es Una PrueBA",
