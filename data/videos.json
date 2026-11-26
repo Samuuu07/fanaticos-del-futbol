@@ -1,18 +1,3 @@
 {
-  "videos": [
-    {
-      "transcripcion": "",
-      "imagen_pos": "27% 88%",
-      "persona": "",
-      "descripcion": "",
-      "url": "https://www.youtube.com/watch?v=ebWmGWcvR8E",
-      "imagen": "img/dsc02457.jpg.jpeg",
-      "tipo": "Entrevista",
-      "formato": "vertical",
-      "titulo": "PRUEBA",
-      "articulo": "",
-      "id": "video-prueba",
-      "fecha": "26/10/2026"
-    }
-  ]
+  "videos": []
 }
