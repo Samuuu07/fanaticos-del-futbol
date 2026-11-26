@@ -26,12 +26,6 @@
   </url>
 
   <url>
-    <loc>https://samuuu07.github.io/fanaticos-del-futbol/videos/video-prueba.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
     <loc>https://samuuu07.github.io/fanaticos-del-futbol/articulos/un-pequeno-bache-para-ser-mas-fuertes.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
