@@ -190,7 +190,9 @@ svg { width: 1.2rem; height: 1.2rem; }
 .about-heading { grid-column: 1/-1; margin: 0; }
 .about-block { border-top: 2px solid var(--ink); }
 .about-media { aspect-ratio: 16/10; background: var(--paper); }
-.about-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+.about-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.about-media img[src*="fotomanuelpersonal"] { object-position: 50% 15%; }
+.about-media img[src*="whatsapp-image-2026-09-02-at-13.37.21-1-"] { object-position: 50% 0%; }
 .about-media img[src*="logofanaticos"] { object-fit: contain; padding: 1rem; }
 .about-text { padding-block: 1rem; }
 .about-num { color: var(--red); }
