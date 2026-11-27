@@ -114,10 +114,15 @@ function htmlReproductor(video) {
           </div>`;
 
     case "instagram":
-      return `<div class="${clase}">
-            <iframe src="${escapeHtml(video.instagramPermalink)}embed/" title="${titulo}"
-              referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen" allowfullscreen></iframe>
-          </div>`;
+      // El embed oficial ajusta su altura al Reel y a los controles de la publicación.
+      return `<div class="${clase} video-instagram">
+            <blockquote class="instagram-media" data-instgrm-permalink="${escapeHtml(video.instagramPermalink)}" data-instgrm-version="14">
+              <a href="${escapeHtml(video.instagramPermalink)}" aria-label="Ver en Instagram: ${titulo}">
+                <img src="../${escapeHtml(video.imagen)}" alt="">
+              </a>
+            </blockquote>
+          </div>
+          <script async src="https://www.instagram.com/embed.js"></script>`;
 
     case "tiktok":
       return `<div class="${clase}">

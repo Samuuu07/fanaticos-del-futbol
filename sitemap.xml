@@ -26,6 +26,24 @@
   </url>
 
   <url>
+    <loc>https://samuuu07.github.io/fanaticos-del-futbol/videos/prueba-youtube-horizontal.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://samuuu07.github.io/fanaticos-del-futbol/videos/prueba-youtube-short.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://samuuu07.github.io/fanaticos-del-futbol/videos/prueba-mp4-horizontal.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://samuuu07.github.io/fanaticos-del-futbol/videos/prueba-video.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

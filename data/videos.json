@@ -1,8 +1,38 @@
 {
   "videos": [
     {
+      "id": "prueba-youtube-horizontal",
+      "titulo": "Prueba YouTube · El derbi es blanquinegro",
       "tipo": "Reportaje",
-      "formato": "horizontal",
+      "fecha": "27/11/2026",
+      "formato": "auto",
+      "url": "https://www.youtube.com/watch?v=peqTQ8jHSbU",
+      "imagen": "img/fotoplantio.jpg",
+      "descripcion": "BCF Inside del canal oficial del Burgos CF sobre el derbi ante el Mirandés en El Plantío. Ejemplo de reproducción horizontal."
+    },
+    {
+      "id": "prueba-youtube-short",
+      "titulo": "Prueba Short · Sergio Francisco antes de la jornada 16",
+      "tipo": "Rueda de prensa",
+      "fecha": "27/11/2026",
+      "formato": "auto",
+      "url": "https://www.youtube.com/shorts/NVXfA2xEl74",
+      "imagen": "img/sergio-francisco.jpeg",
+      "descripcion": "Fragmento vertical de la rueda de prensa de Sergio Francisco, publicado en el canal oficial del Burgos CF."
+    },
+    {
+      "id": "prueba-mp4-horizontal",
+      "titulo": "Prueba MP4 · Panorámica de El Plantío",
+      "tipo": "Vídeo",
+      "fecha": "27/11/2026",
+      "formato": "auto",
+      "archivo": "media/videos/prueba-el-plantio-horizontal.mp4",
+      "imagen": "img/fotoplantio.jpg",
+      "descripcion": "Clip horizontal de seis segundos creado a partir de una fotografía del estadio. Se reproduce con los controles del navegador y sin sonido."
+    },
+    {
+      "tipo": "Reportaje",
+      "formato": "auto",
       "imagen_pos": "43% 48%",
       "id": "prueba-video-tiktok",
       "titulo": "PRUEBA VIDEO TIK TOK",
@@ -12,7 +42,7 @@
     },
     {
       "tipo": "Reportaje",
-      "formato": "horizontal",
+      "formato": "auto",
       "imagen_pos": "45% 26%",
       "id": "prueba-video",
       "titulo": "Prueba de video",
