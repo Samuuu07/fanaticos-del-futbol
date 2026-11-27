@@ -1,3 +1,14 @@
 {
-  "videos": []
+  "videos": [
+    {
+      "tipo": "Reportaje",
+      "formato": "auto",
+      "imagen_pos": "45% 26%",
+      "id": "prueba-video",
+      "titulo": "Prueba de video",
+      "fecha": "27/11/2026",
+      "url": "https://www.instagram.com/reel/DgF7k3loiTc/",
+      "imagen": "img/whatsapp-image-2026-09-02-at-13.37.19.jpeg"
+    }
+  ]
 }
