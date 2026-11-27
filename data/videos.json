@@ -2,6 +2,16 @@
   "videos": [
     {
       "tipo": "Reportaje",
+      "formato": "horizontal",
+      "imagen_pos": "43% 48%",
+      "id": "prueba-video-tiktok",
+      "titulo": "PRUEBA VIDEO TIK TOK",
+      "fecha": "10/11/2026",
+      "url": "https://www.tiktok.com/@fanaticosdelfutbolll/video/7708755582898965782",
+      "imagen": "img/dsc02393.jpg.jpeg"
+    },
+    {
+      "tipo": "Reportaje",
       "formato": "auto",
       "imagen_pos": "45% 26%",
       "id": "prueba-video",
