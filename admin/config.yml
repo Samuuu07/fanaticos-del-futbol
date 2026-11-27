@@ -131,15 +131,25 @@ collections:
               - { label: "Título", name: "titulo", widget: "string" }
               - { label: "Tipo de pieza", name: "tipo", widget: "select", options: ["Entrevista", "Reportaje", "Rueda de prensa", "Vídeo"], default: "Entrevista" }
               - { label: "Fecha", name: "fecha", widget: "datetime", date_format: "DD/MM/YYYY", time_format: false, format: "DD/MM/YYYY" }
-              - label: "Enlace al vídeo de YouTube"
+              - label: "Archivo de vídeo original"
+                name: "archivo"
+                widget: "file"
+                required: false
+                media_folder: "/media/videos"
+                public_folder: "media/videos"
+                choose_url: false
+                hint: "Sube un MP4, WebM, OGG o MOV, o utiliza el campo de enlace. MP4 con vídeo H.264 es la opción más compatible."
+              - label: "Enlace a YouTube, Instagram o TikTok"
                 name: "url"
                 widget: "string"
-                pattern: ['^https://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:[^#\s]*&)?v=|shorts/|live/|embed/)|youtu\.be/)[A-Za-z0-9_-]{11}(?:[?&#/][^\s]*)?$', "Pega el enlace de YouTube, Shorts o youtu.be de un vídeo concreto."]
+                required: false
+                hint: "Pega un enlace de YouTube o Shorts, de una publicación o Reel de Instagram, o el enlace completo de TikTok (@usuario/video/número). Para usar un enlace, deja vacío el archivo."
               - label: "Formato del reproductor"
                 name: "formato"
                 widget: "select"
-                default: "horizontal"
+                default: "auto"
                 options:
+                  - { label: "Automático según el origen", value: "auto" }
                   - { label: "Horizontal (16:9)", value: "horizontal" }
                   - { label: "Vertical (9:16)", value: "vertical" }
               - { label: "Miniatura", name: "imagen", widget: "image" }

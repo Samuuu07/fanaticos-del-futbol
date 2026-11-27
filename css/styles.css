@@ -163,8 +163,10 @@ svg { width: 1.2rem; height: 1.2rem; }
 .video-meta { display: flex; align-items: center; flex-wrap: wrap; gap: .25rem .75rem; color: var(--muted); font: .81rem/1.4 var(--mono); }
 .video-meta span { color: var(--red); font-weight: 600; }
 .video-player { display: grid; justify-items: center; margin: 1.25rem 0 .6rem; background: #171b1d; border-radius: .4rem; overflow: hidden; }
-.video-player iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 0; }
-.video-vertical iframe { aspect-ratio: 9/16; width: min(100%, 42vh); width: min(100%, 42svh); }
+.video-player :is(iframe, video) { display: block; width: 100%; aspect-ratio: 16/9; border: 0; }
+.video-player video { object-fit: contain; }
+.video-vertical :is(iframe, video) { aspect-ratio: 9/16; width: min(100%, 42vh); width: min(100%, 42svh); }
+.video-original video { width: auto; max-width: 100%; max-height: 76vh; aspect-ratio: auto; }
 .video-description, .video-transcript p { white-space: pre-line; max-width: 70ch; overflow-wrap: anywhere; margin-top: 1rem; }
 .video-transcript, .video-related { margin-top: 1.5rem; border-top: 1px solid var(--line); padding-top: 1rem; }
 .video-transcript summary { cursor: pointer; font-weight: 700; }
