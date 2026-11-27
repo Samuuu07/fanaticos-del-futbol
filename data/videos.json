@@ -12,7 +12,7 @@
     },
     {
       "tipo": "Reportaje",
-      "formato": "auto",
+      "formato": "horizontal",
       "imagen_pos": "45% 26%",
       "id": "prueba-video",
       "titulo": "Prueba de video",
